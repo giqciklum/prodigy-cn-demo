@@ -65,8 +65,8 @@
       name: 'Modelo local',
       local: true,
       place: 'Servidor con GPU en su CPD (Ollama, LM Studio o llama.cpp)',
-      exit: 'No sale ningún dato de su red',
-      note: 'La calidad y la velocidad dependen del modelo y del servidor: se dimensionan en las semanas 1–2.'
+      exit: 'La inferencia se ejecuta dentro de su red',
+      note: 'La calidad y la velocidad se dimensionan con su servidor. Sistemas revisa también los flujos de conectores y telemetría.'
     }
   };
 
@@ -106,7 +106,7 @@
 
   const HONESTY = [
     { aspect: 'Consola, workflows (Routines) y editor', demo: 'Esta consola, en el navegador, con los workflows publicados en la sesión', pilot: 'Prodigy instalado en su infraestructura; Routines con editor visual, versiones y prueba en seco', origin: 'serie' },
-    { aspect: 'Workflow a partir de un procedimiento escrito', demo: 'Generador construido sobre Prodigy para esta demo, con tres plantillas', pilot: 'Se valida con sus procedimientos; cada workflow se revisa en el editor antes de publicarlo', origin: 'demo' },
+    { aspect: 'Workflow a partir de un procedimiento escrito', demo: 'Generador simulado en el navegador, con tres plantillas', pilot: 'Se integra en Prodigy y se valida con sus procedimientos; cada workflow se revisa antes de publicarlo', origin: 'demo' },
     { aspect: 'Agentes de Congelados de Navarra', demo: 'Cadena de frío, trazabilidad, bloqueo, incidencias, reclamaciones y parte diario, sobre datos sintéticos', pilot: 'Los del caso elegido, adaptados a sus datos y procedimientos', origin: 'demo' },
     { aspect: `Conectores (${fmt.list(SYSTEM_NAMES)})`, demo: 'Simulados en el navegador', pilot: 'Lectura de 1–2 sistemas por API o réplica de base de datos de solo lectura. No hay conectores de serie para SAP, MES ni SCADA', origin: 'piloto' },
     { aspect: 'Disparo por alarma', demo: `Al abrir la alarma de ${D.chamber_c07.code}`, pilot: 'Webhook desde Galileo/SCADA o consulta periódica (cron): Prodigy no tiene planificador propio de agentes', origin: 'piloto' },
@@ -172,9 +172,9 @@
   const FAQ = [
     ['¿Dónde se instala?', 'En una máquina virtual de su CPD con Docker Compose o en Kubernetes con Helm, o en su suscripción de nube. No depende de servicios de Ciklum en la nube.'],
     ['¿Cómo entran los usuarios?', 'Con SSO de Microsoft Entra ID (OIDC) o SAML 2.0. Los permisos van por rol y por realm (planta o departamento).'],
-    ['¿Qué datos salen de nuestra red?', 'Solo el texto que se envía al modelo que elijan; con un modelo local, ninguno. La pasarela enmascara datos personales antes de llamar al modelo; los formatos DNI, NIE e IBAN se añaden en el piloto.'],
+    ['¿Qué datos salen de nuestra red?', 'Con un modelo local, la inferencia se ejecuta en su red. Con uno externo, se revisa el contenido enviado y el contrato. Los flujos de conectores, telemetría y enmascarado se validan con Sistemas.'],
     ['¿Hay conectores de SAP, MES o SCADA?', 'No de serie. En el piloto se construyen para 1–2 sistemas, por API o réplica de base de datos de solo lectura; la lectura de bases de datos Postgres ya funciona.'],
-    ['¿Cuántos usuarios soporta?', 'Un piloto ronda las 20–30 sesiones simultáneas. Cada realm tiene límites de peticiones por minuto, de tokens al día y de presupuesto.'],
+    ['¿Cuántos usuarios soporta?', 'La concurrencia se dimensiona y se verifica con pruebas de carga. Cada realm tiene límites de peticiones por minuto, de tokens al día y de presupuesto.'],
     ['¿En qué idioma trabaja?', 'El chat y los agentes, en español; las respuestas al cliente, en su idioma. La consola de administración de Prodigy está en inglés.'],
     ['¿Licencia y precio?', 'Se concretan en la propuesta comercial (SOW).']
   ];
@@ -971,7 +971,7 @@
     }
     return [
       'Prodigy no sustituye nada: va encima de SAP, Mapex, Opcenter, Easy WMS, Galileo y Elara. Lee, razona con vuestros procedimientos y propone; antes de escribir en un sistema, aprueba una persona.',
-      'Se instala en vuestra infraestructura, con vuestro SSO de Microsoft Entra ID y el modelo que elijáis. Con un modelo local no sale ningún dato de la red.',
+      'Se instala en vuestra infraestructura, con vuestro SSO de Microsoft Entra ID y el modelo que elijáis. Con un modelo local, la inferencia queda en su red; Sistemas valida los demás flujos.',
       'Las líneas discontinuas en ámbar son las únicas escrituras, y siempre tras aprobación. Galileo/SCADA solo se lee: no se toca el control de planta.'
     ];
   }
@@ -994,7 +994,7 @@
   function tourShow(sel) { const root = scope(); const el = root && root.querySelector(sel); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   const TOUR = [
     { say: 'Prodigy va encima de SAP, Mapex, Opcenter, Easy WMS, Galileo y Elara: lee, prepara propuestas y una persona aprueba antes de escribir.', run: async (api) => { tourTab('arquitectura'); tourShow('#plat-arch'); await pause(api, 400); } },
-    { say: 'Con un modelo local, el modelo entra en su infraestructura: no sale ningún dato de su red.', run: async (api) => { tourSeg('plat-llm', 'local'); await pause(api, 400); } },
+    { say: 'Con un modelo local, la inferencia entra en su infraestructura; los demás flujos se validan con Sistemas.', run: async (api) => { tourSeg('plat-llm', 'local'); await pause(api, 400); } },
     { say: 'Qué es de serie en Prodigy, qué se ha construido para esta demo y qué se construye en el piloto.', run: async (api) => { tourTab('piloto'); tourShow('#plat-honesty'); await pause(api, 400); } },
     { say: 'Piloto de 6–8 semanas: un caso, Fustiñana, realm de Calidad y criterios de aceptación firmados en la semana 1.', run: async (api) => { tourShow('#plat-pilot'); await pause(api, 400); } },
     { say: 'Horas liberadas con supuestos editables; la línea base real se mide en el piloto.', run: async (api) => { tourTab('horas'); tourShow('#plat-tabs'); await pause(api, 400); } },

@@ -1435,7 +1435,7 @@
         return [
           'Así escribe Calidad un procedimiento: en castellano, como en su PNT. No hay que dibujar ni programar nada.',
           'Prodigy lo convierte en un workflow de la plataforma: disparador, agentes en orden, aprobación humana y salidas, cada uno enlazado a su frase.',
-          'Honestidad: el generador a partir de texto lo hemos construido sobre Prodigy para esta demo; los workflows (Routines), el editor, la aprobación y la auditoría son de serie.'
+          'Honestidad: el generador desde texto se simula aquí y su integración en Prodigy se valida en el piloto; los workflows (Routines), el editor, la aprobación y la auditoría son de serie.'
         ];
       },
       next: (state) => {

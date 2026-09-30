@@ -640,12 +640,12 @@
   function referenceCard() {
     return App.card({
       title: 'Referencia de auditoría',
-      sub: 'Requisitos de IFS Food, BRCGS y FSSC 22000 sobre trazabilidad y retirada',
+      sub: 'Objetivo del ejercicio; Calidad confirma los requisitos de su certificación vigente',
       icon: 'shield-check',
       body: html`<ul class="ret-ref">
-        <li><span class="ret-ref-k">BRCGS Food</span><span>Trazabilidad completa en 4 horas como máximo y prueba de retirada al menos una vez al año, con los tiempos de las actividades clave.</span></li>
-        <li><span class="ret-ref-k">IFS Food v8</span><span>Prueba de trazabilidad al menos una vez al año, hacia atrás y hacia delante, con balance de masas.</span></li>
-        <li><span class="ret-ref-k">FSSC 22000</span><span>Verificar la eficacia de la retirada, por ejemplo con simulacros.</span></li>
+        <li><span class="ret-ref-k">BRCGS Food</span><span>Objetivo ilustrativo: trazabilidad en 4 horas. Confirmar alcance, periodicidad y plazos con Calidad y la edición aplicable.</span></li>
+        <li><span class="ret-ref-k">IFS Food v8</span><span>El ejercicio muestra trazabilidad hacia atrás y hacia delante, con balance de masas. Calidad valida el protocolo aplicable.</span></li>
+        <li><span class="ret-ref-k">FSSC 22000</span><span>El simulacro permite revisar la eficacia del procedimiento de retirada; no acredita cumplimiento por sí solo.</span></li>
       </ul>
       <p class="muted small mt-4">Un simulacro no bloquea stock ni envía avisos: se mide si la información se obtiene completa, cuadra en kilos y a tiempo.</p>`
     });
@@ -726,7 +726,7 @@
     const b = sc.bal;
     const plannedToday = sc.retain.filter((s) => s.date === TODAY);
     return html`<div class="kpis">
-      ${App.kpi({ label: 'Tiempo de trazado', value: fmt.ms(run.ms), sub: 'Traza, balance y avisos · BRCGS: 4 h como máximo', icon: 'clock', tone: 'ok' })}
+      ${App.kpi({ label: 'Tiempo de trazado', value: fmt.ms(run.ms), sub: 'Tiempo simulado · objetivo ilustrativo: 4 h', icon: 'clock', tone: 'ok' })}
       ${App.kpi({ label: 'Palés localizados', value: `${sc.pallets.length} de ${sc.pallets.length}`, sub: `${fmt.kg(sum(sc.pallets, (p) => p.kg))} · ${fmt.plural(sc.bal.stockN, 'palé', 'palés')} en almacén`, icon: 'pallet' })}
       ${App.kpi({ label: 'Balance de masas conciliado', value: pct1(b.reconciled), sub: `${fmt.kg(b.diff)} sin justificar de ${fmt.kg(b.received)} recibidos`, icon: 'scale', action: 'scroll-balance' })}
       ${App.kpi({ label: 'Clientes a notificar', value: sc.notify.length, sub: sc.retain.length ? `${fmt.plural(sc.retain.length, 'expedición', 'expediciones')} a retener${plannedToday.length ? ` · ${fmt.list(plannedToday.map((s) => `hoy ${s.time}`))}` : ''}` : 'Sin expediciones planificadas', icon: 'mail', tone: sc.notify.length ? 'warn' : undefined, action: 'scroll-customers' })}
@@ -852,12 +852,12 @@
     const rows = timingRows(sc, r);
     return App.card({
       title: 'Cronómetro frente a auditoría',
-      sub: 'Tiempos de las actividades clave (BRCGS los pide en el registro)',
+      sub: 'Tiempos de la simulación; no son medidas de rendimiento de producción',
       icon: 'clock',
       body: html`<div class="stack">
         ${App.stats([
           { label: 'Trazado con Prodigy', value: fmt.ms(run.ms), tone: 'ok' },
-          { label: 'Máximo BRCGS', value: fmt.dur(BRC_LIMIT_S) },
+          { label: 'Objetivo del ejercicio', value: fmt.dur(BRC_LIMIT_S) },
           { label: 'Hoy (estimación)', value: '1–4 h' }
         ])}
         <div class="card flat">${App.table({ dense: true, rows, cols: [
@@ -997,15 +997,15 @@
     return App.card({
       id: 'ret-compare',
       title: 'Hoy frente a Prodigy',
-      sub: 'Mismo simulacro · la columna «Hoy» es una estimación prudente que se valida con una línea base en el piloto',
+      sub: 'Mismo simulacro · la columna «Hoy» es un supuesto ilustrativo que se valida con una línea base en el piloto',
       icon: 'bar-chart',
       flush: true,
       body: App.table({ rows, cols: [
         { label: 'Concepto', width: '22%', render: (r) => html`<span class="strong">${r.k}</span>` },
         { label: 'Hoy (estimación a validar)', width: '39%', render: (r) => r.today },
-        { label: 'Con Prodigy (medido en esta sesión)', render: (r) => (r.strong ? html`<strong class="t-ok">${r.prodigy}</strong>` : r.prodigy) }
+        { label: 'Con Prodigy (simulación)', render: (r) => (r.strong ? html`<strong class="t-ok">${r.prodigy}</strong>` : r.prodigy) }
       ] }),
-      footer: html`<span class="muted small row row-nowrap" style="align-items:flex-start">${icon('info', 16)}<span>Los valores de «Hoy» son rangos habituales en plantas con varias fuentes de datos; en las semanas 1–2 del piloto se mide la línea base real de Congelados de Navarra.</span></span>`
+      footer: html`<span class="muted small row row-nowrap" style="align-items:flex-start">${icon('info', 16)}<span>Los valores de «Hoy» son supuestos ilustrativos y los segundos de esta demo corresponden a una simulación; en las semanas 1–2 del piloto se mide la línea base real de Congelados de Navarra.</span></span>`
     });
   }
 
@@ -1089,7 +1089,7 @@
       sections: [
         { heading: '1. Objeto y alcance', text: `Simulacro de retirada con punto de partida en ${MODES[sc.mode].noun} ${sc.code} (${scopeHeadline(sc)}). Se comprueba la trazabilidad hacia atrás (recepción, agricultor y parcela) y hacia delante (palés por SSCC, expediciones y clientes), con balance de masas. El ejercicio no bloquea stock ni envía avisos.` },
         { heading: '2. Resultado', list: [
-          `Trazabilidad completa en ${fmt.ms(run.ms)} (referencia BRCGS: 4 h como máximo).`,
+          `Trazado simulado en ${fmt.ms(run.ms)}. Objetivo ilustrativo: 4 h, a confirmar por Calidad.`,
           `${sc.pallets.length} de ${sc.pallets.length} palés localizados (${fmt.kg(sum(sc.pallets, (p) => p.kg))}): ${fmt.plural(sc.pallets.filter((p) => p.status === 'expedido').length, 'expedido', 'expedidos')} y ${fmt.plural(b.stockN, 'en almacén', 'en almacén')}.`,
           `Balance de masas conciliado al ${pct1(b.reconciled)}: ${fmt.kg(b.received)} recibidos, ${fmt.kg(b.losses)} de mermas justificadas, ${fmt.kg(b.produced)} producidos${b.bulkLeft ? `, ${fmt.kg(b.bulkLeft)} de granel restante` : ''} y ${fmt.kg(b.diff)} sin justificar.`,
           `${fmt.plural(sc.notify.length, 'cliente', 'clientes')} con producto entregado y ${fmt.plural(sc.retain.length, 'expedición planificada', 'expediciones planificadas')} que se retendría${sc.retain.length === 1 ? '' : 'n'}.`,
@@ -1232,14 +1232,14 @@
         const run = loc.run;
         if (!run) {
           return [
-            'Simulacro de retirada: el ejercicio que piden IFS Food y BRCGS al menos una vez al año y que hoy lleva horas y a varias personas.',
+            'Simulacro de retirada con traza y balance de masas; en el piloto Calidad confirma el protocolo de auditoría y medimos el tiempo real.',
             'Se elige el punto de partida: un lote, todos los lotes de una parcela o un granel de campaña.',
             'Prodigy recorre SAP, Mapex y Easy WMS hacia atrás hasta la parcela y hacia delante hasta cada SSCC, expedición y cliente, y cuadra el balance en kilos.'
           ];
         }
         const sc = findScope(run.mode, run.code_in);
         const out = [
-          `Trazado en ${fmt.ms(run.ms)}; BRCGS pide trazabilidad completa en 4 horas como máximo.`,
+          `Trazado simulado en ${fmt.ms(run.ms)}; el objetivo de 4 horas es ilustrativo y lo confirma Calidad.`,
           sc ? `El balance cuadra en kilos: ${pct1(sc.bal.reconciled)} conciliado, con cada merma justificada por su etapa en Mapex. Lo que no cuadra (${fmt.kg(sc.bal.diff)}) se ve, no se reparte.` : '',
           sc && sc.retain.length ? `Lo accionable: ${sc.retain.map((s) => `${s.id} (${shortWhen(s.date, s.time)})`).join(' y ')} se retendría, y el stock del mismo origen se bloquearía.` : '',
           'Los avisos se preparan en el idioma de cada cliente, pero en un simulacro no se envía nada. Decide Calidad.'
@@ -1275,7 +1275,7 @@
             title: `Simulacro en curso · ${rs.label}`,
             sub: scopeHeadline(rs),
             icon: 'activity',
-            actions: html`<div class="ret-timer" aria-live="off"><span class="ret-timer-label">Cronómetro</span><span class="ret-timer-num" id="ret-timer">0 ms</span><span class="ret-timer-ref">BRCGS: 4 h</span></div>`,
+            actions: html`<div class="ret-timer" aria-live="off"><span class="ret-timer-label">Cronómetro</span><span class="ret-timer-num" id="ret-timer">0 ms</span><span class="ret-timer-ref">Objetivo demo: 4 h</span></div>`,
             body: html`<div class="stack">${genHTML(rs, false)}<div id="ret-run-log"></div></div>`
           })}`);
         genBind(ctx);

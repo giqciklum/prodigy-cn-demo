@@ -1707,7 +1707,7 @@ ${signs ? `<div class="sign">${signs}</div>` : ''}
       ['Datos', 'Lotes, palés (SSCC), lecturas, reclamaciones y procedimientos son sintéticos y coherentes entre sí. Los ha preparado Ciklum para esta demostración; no proceden de Congelados de Navarra.'],
       ['Acciones', 'Bloqueos, tickets, envíos y publicaciones se simulan y no salen de este navegador. Todo queda en el registro de auditoría de la sesión y se borra con «Reiniciar demo».'],
       ['Conectores', 'SAP (SAP QM), MES Mapex, Siemens Opcenter APS, Mecalux Easy WMS, Galileo/SCADA, Elara y Microsoft 365 aparecen como conectores de demostración. En un piloto se conectan uno o dos sistemas en modo lectura.'],
-      ['De serie y a medida', 'De serie en Prodigy: agentes y workflows (Routines) con editor, aprobación humana, registro de auditoría, respuestas con citas y control de coste por petición. Construido sobre la plataforma para esta demo: el generador de workflows a partir de texto y los agentes específicos de Congelados de Navarra.'],
+      ['De serie y a medida', 'De serie en Prodigy: agentes y workflows (Routines) con editor, aprobación humana, registro de auditoría, respuestas con citas y control de coste por petición. Representado en esta demo: el generador de workflows desde texto y los agentes de planta. Su integración en Prodigy y los conectores se validan en el piloto.'],
       ['Modelo de lenguaje', 'Esta página no llama a ningún modelo: las respuestas están preparadas. En un piloto, el modelo lo elige Congelados de Navarra (Azure OpenAI, Gemini o un modelo local) y Prodigy se instala en su infraestructura.']
     ];
     modal({

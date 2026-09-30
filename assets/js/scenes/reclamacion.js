@@ -718,7 +718,7 @@
     return App.card({
       id: 'rc-compare',
       title: 'Esta reclamación: hoy y con Prodigy',
-      sub: '«Hoy»: estimación prudente que se valida con la línea base del piloto · «Con Prodigy»: medido en esta sesión',
+      sub: '«Hoy»: supuesto ilustrativo que se valida con la línea base del piloto · «Con Prodigy»: duración de la simulación, no rendimiento de producción',
       icon: 'bar-chart',
       flush: true,
       body: App.table({
@@ -727,7 +727,7 @@
         cols: [
           { label: '', width: '26%', render: (r) => html`<span class="strong">${r.k}</span>` },
           { label: 'Hoy · estimación', width: '37%', render: (r) => html`<span class="slate">${r.hoy}</span>` },
-          { label: 'Con Prodigy · esta sesión', render: (r) => r.pro }
+          { label: 'Con Prodigy · simulación', render: (r) => r.pro }
         ]
       }),
       footer: html`<span class="row row-nowrap muted small" style="align-items:flex-start">${icon('list-checks', 16)}<span>Criterio de aceptación propuesto para el piloto: traza y borrador en menos de 15 minutos, y Calidad acepta el borrador con ediciones menores en al menos el 70 % de los casos.</span></span>`

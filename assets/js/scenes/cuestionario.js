@@ -847,14 +847,14 @@
     return App.card({
       id: 'cq-compare',
       title: 'Hoy y con Prodigy · este cuestionario',
-      sub: '«Hoy»: estimación prudente, a validar con vuestra línea base en el piloto · «Con Prodigy»: lo medido en esta sesión',
+      sub: '«Hoy»: supuesto ilustrativo, a validar con vuestra línea base en el piloto · «Con Prodigy»: duración de la simulación, no rendimiento de producción',
       icon: 'bar-chart',
       flush: true,
       body: App.table({
         cols: [
           { label: '', width: '20%', render: (r) => html`<span class="strong">${r.k}</span>` },
           { label: 'Hoy (estimación)', width: '38%', render: (r) => (r.time ? html`<span class="strong">${r.hoy}</span>` : r.hoy) },
-          { label: 'Con Prodigy (esta sesión)', render: (r) => (r.time ? html`<span class="strong${done ? ' t-ok' : ''}">${r.con}</span>` : r.con) }
+          { label: 'Con Prodigy (simulación)', render: (r) => (r.time ? html`<span class="strong${done ? ' t-ok' : ''}">${r.con}</span>` : r.con) }
         ],
         rows,
         rowAttrs: (r) => ({ 'data-row': r.k })

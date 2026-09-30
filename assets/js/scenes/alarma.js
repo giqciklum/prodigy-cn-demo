@@ -754,16 +754,16 @@
     return App.card({
       id: 'al-compare',
       title: 'Comparación con el proceso actual',
-      sub: 'La columna «Hoy» es una estimación prudente que se valida con la línea base del piloto',
+      sub: 'La columna «Hoy» es un supuesto ilustrativo que se valida con la línea base del piloto',
       icon: 'scale',
       flush: true,
       class: 'al-cmp',
       body: App.table({ rows, cols: [
         { label: 'Aspecto', width: '22%', render: (r) => html`<span class="strong">${r.k}</span>` },
         { label: 'Hoy (estimación)', width: '36%', render: (r) => r.today },
-        { label: 'Con Prodigy (esta sesión)', render: (r) => r.now }
+        { label: 'Con Prodigy (simulación)', render: (r) => r.now }
       ] }),
-      footer: html`<span class="al-cmp-foot">${icon('info', 15)}<span>Los valores de «Hoy» son orientativos y se sustituyen por la línea base que se mide en las semanas 1–2 del piloto.</span></span>`
+      footer: html`<span class="al-cmp-foot">${icon('info', 15)}<span>«Hoy» usa supuestos ilustrativos. El tiempo de esta simulación no mide rendimiento real; ambos se validan con la línea base del piloto.</span></span>`
     });
   }
 
@@ -1168,7 +1168,7 @@ td .code{white-space:nowrap}
     return [
       `Aplicado tras la aprobación: ${run.blq} en SAP QM, ${sc.pallets} palés inmovilizados y ${sc.ships.length} expediciones retenidas en Easy WMS, ${run.nc} en Elara con el 8D en borrador y aviso por Teams.`,
       'El informe de incidencia sale como documento controlado: código, revisión, aprobaciones y registro de la ejecución, listo para una auditoría IFS o BRCGS.',
-      `Comparación prudente: hoy entre 1 y 3 horas con varias personas; aquí ${fmt.ms(total)} medidos en la sesión. La línea base real se mide en el piloto.`
+      `Comparación ilustrativa: el tiempo de esta animación no mide rendimiento real. En el piloto se miden tiempos actuales y resultados con Prodigy.`
     ];
   }
   function presenterNext(state) {
