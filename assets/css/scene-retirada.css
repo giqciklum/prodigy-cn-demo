@@ -1,0 +1,107 @@
+/*
+ * Escena «retirada» · Simulacro de retirada.
+ * Solo lo que no cubre app.css: el diagrama de genealogía (columnas con conectores SVG que pasan a
+ * filas por etapa cuando no caben), el formulario de punto de partida y el balance de masas.
+ * Solo tokens de tokens.css; espaciado en múltiplos de 4 px.
+ */
+
+/* ---------------------------------------------------------------- Punto de partida */
+.ret-field-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
+.ret-field-row .field { flex: 1 1 280px; }
+.ret-field-row .input { font-family: var(--font-mono); letter-spacing: -.01em; }
+.ret-examples { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); }
+.ret-example { height: 26px; padding: 0 10px; border: 1px solid var(--line-strong); border-radius: var(--r-pill); background: var(--card); color: var(--cn-green-dark); font: 500 12px/1 var(--font-mono); letter-spacing: -.01em; }
+.ret-example:hover { background: var(--cn-green-50); border-color: var(--cn-green-200); }
+.ret-preview { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r-lg); background: color-mix(in srgb, var(--bg) 55%, var(--card)); }
+.ret-preview > .icon { color: var(--cn-green-dark); }
+.ret-preview-main { min-width: 0; flex: 1; }
+.ret-preview-side { flex: none; font-size: 12.5px; color: var(--slate); font-variant-numeric: tabular-nums; }
+.ret-ref { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; font-size: 13px; color: var(--slate); }
+.ret-ref li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; }
+.ret-ref-k { font-weight: 600; color: var(--ink); }
+
+/* ---------------------------------------------------------------- Cronómetro en curso */
+.ret-timer { display: inline-flex; align-items: baseline; gap: 8px; padding: 4px 10px; border: 1px solid var(--cn-green-100); border-radius: var(--r); background: var(--cn-green-50); }
+.ret-timer-label { font-size: 12px; font-weight: 600; color: var(--cn-green-dark); }
+.ret-timer-num { min-width: 52px; font: 700 18px/1.2 var(--font-head); color: var(--cn-green-900); font-variant-numeric: tabular-nums; text-align: right; }
+.ret-timer-ref { font-size: 12px; color: var(--muted); }
+
+/* ---------------------------------------------------------------- Genealogía */
+.gen { position: relative; min-width: 0; }
+.gen-links { position: absolute; left: 0; top: 0; z-index: 0; overflow: visible; pointer-events: none; }
+.gen-link { fill: none; stroke: var(--cn-green-200); stroke-width: 1.5; }
+.gen-arrow { fill: var(--cn-green-200); }
+.gen-link.is-planned { stroke: var(--amber-200); }
+.gen-arrow.is-planned { fill: var(--amber-200); }
+.gen-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(var(--gen-cols, 7), minmax(0, 1fr)); column-gap: 20px; }
+.gen-col { display: flex; flex-direction: column; min-width: 0; }
+.gen-head { display: flex; align-items: center; gap: 6px; padding-bottom: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--line); color: var(--muted); font: 600 10.5px/1.2 var(--font-body); letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; }
+.gen-head .count { margin-left: auto; color: var(--slate); letter-spacing: 0; font-variant-numeric: tabular-nums; }
+.gen-body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+.gen-node { position: relative; min-width: 0; padding: 8px 9px; border: 1px solid var(--line-strong); border-radius: var(--r-lg); background: var(--card); transition: opacity .22s var(--ease), transform .22s var(--ease), border-color .15s var(--ease); }
+.gen-node.is-hidden { visibility: hidden; opacity: 0; transform: translateY(4px); }
+.gen-node[data-lot] { cursor: pointer; }
+.gen-node[data-lot]:hover { border-color: var(--cn-green); }
+.gen-node[data-lot]:focus-visible { outline: 2px solid var(--cn-green); outline-offset: 2px; }
+.gen-node.is-start { padding: 7px 8px; border: 2px solid var(--cn-green); background: var(--cn-green-50); }
+.gen-node.tone-planned { box-shadow: inset 3px 0 0 var(--amber); }
+.gen-node.tone-customer { background: var(--bg); }
+.gen-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 5px; color: var(--muted); font: 600 9.5px/1.3 var(--font-body); letter-spacing: .07em; text-transform: uppercase; }
+.gen-kicker .icon { color: var(--slate); }
+.gen-flag { margin-left: auto; color: var(--cn-green-dark); font-size: 9.5px; letter-spacing: .02em; text-transform: none; white-space: nowrap; }
+.gen-title { margin-top: 3px; color: var(--ink); font: 600 12.5px/1.35 var(--font-body); overflow-wrap: anywhere; }
+.gen-title.mono { font: 600 11.5px/1.4 var(--font-mono); letter-spacing: -.02em; overflow-wrap: normal; }
+.gen-sub { margin-top: 2px; color: var(--slate); font-size: 11.5px; line-height: 1.35; overflow-wrap: anywhere; }
+.gen-meta { margin-top: 1px; color: var(--muted); font-size: 11.5px; line-height: 1.35; overflow-wrap: anywhere; }
+.gen-meta.t-warn { color: var(--amber); }
+.gen-alert { margin-top: 4px; color: var(--amber); font-size: 11px; font-weight: 600; line-height: 1.3; }
+.gen-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 14px; color: var(--slate); font-size: 12px; }
+.gen-lg { display: inline-block; width: 14px; height: 10px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--card); }
+.gen-lg.is-start { border: 2px solid var(--cn-green); background: var(--cn-green-50); }
+.gen-lg.tone-planned { box-shadow: inset 3px 0 0 var(--amber); }
+
+/* Sin sitio para las columnas: una fila por etapa (la dispone la escena según el ancho real) */
+.gen.is-vertical .gen-links { display: none; }
+.gen.is-vertical .gen-grid { display: flex; flex-direction: column; }
+.gen.is-vertical .gen-col { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 12px; padding: 12px 0; border-top: 1px solid var(--line-soft); }
+.gen.is-vertical .gen-col:first-child { padding-top: 0; border-top: 0; }
+.gen.is-vertical .gen-head { margin: 0; padding: 8px 0 0; border-bottom: 0; align-self: start; }
+.gen.is-vertical .gen-head .count { margin-left: 4px; }
+.gen.is-vertical .gen-body { flex-direction: row; flex-wrap: wrap; justify-content: flex-start; gap: 8px; }
+.gen.is-vertical .gen-node { flex: 1 1 180px; max-width: 300px; }
+.gen.is-vertical .gen-node.is-hidden { display: none; }
+
+/* ---------------------------------------------------------------- Balance de masas y tablas */
+.ret-bal tr.is-group td { padding-top: 10px; background: color-mix(in srgb, var(--bg) 70%, var(--card)); }
+.ret-group { color: var(--slate); font-size: 12px; font-weight: 600; }
+.ret-bal tr.is-in td, .ret-bal tr.is-out td { color: var(--ink); }
+.ret-bal tr.is-total td { border-top: 1px solid var(--line-strong); background: var(--ok-50); }
+.ret-scroll { max-height: 460px; overflow-y: auto; }
+
+@media (max-width: 720px) {
+  .ret-field-row .btn-lg { width: 100%; }
+  .ret-ref li { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .gen.is-vertical .gen-col { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .gen.is-vertical .gen-node { max-width: none; }
+  .ret-bal tr.is-group td::before { display: none; }
+  .ret-bal tr.is-group td { padding-left: 0 !important; background: transparent; }
+  .ret-scroll { max-height: none; }
+  .ret-timer { padding: 4px 8px; }
+}
+
+/* Cifras del balance: siempre 3 por fila (2 en móvil), sin huecos en la rejilla */
+.ret-stats .stat-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 720px) { .ret-stats .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Subapartado dentro de una tarjeta con lista (clientes → retención en muelle) */
+.ret-subhead { display: flex; align-items: center; gap: 6px; padding: 10px 16px 8px; border-top: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 55%, var(--card)); color: var(--slate); font: 600 11px/1.2 var(--font-body); letter-spacing: .06em; text-transform: uppercase; }
+
+/* Columna lateral del resultado: la última tarjeta ocupa el alto que queda */
+.ret-side > .card:last-child { flex: 1; }
+
+/* Tarjeta de aprobación de la escena en móvil: cada fila del alcance en dos líneas */
+@media (max-width: 720px) {
+  [data-approval-card="ret-cierre"] .approval-scope li { flex-wrap: wrap; row-gap: 4px; }
+  [data-approval-card="ret-cierre"] .approval-scope .scope-label { flex: 1 1 100%; }
+  [data-approval-card="ret-cierre"] .approval-scope .scope-value { margin-left: auto; }
+}

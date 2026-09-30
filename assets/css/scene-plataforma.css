@@ -1,0 +1,168 @@
+/*
+ * Escena «plataforma» · Cómo encaja Prodigy en Congelados de Navarra.
+ * Estilos propios de la escena: diagrama de arquitectura (SVG), plan del piloto, calculadora de horas,
+ * preguntas de Sistemas y herramientas del registro. Solo tokens de tokens.css; sin degradados ni sombras nuevas.
+ * Todas las reglas van acotadas a la escena ([data-scene="plataforma"]) para no afectar a otras vistas.
+ */
+
+/* ---------------------------------------------------------------- Diagrama de arquitectura */
+[data-scene="plataforma"] .arch-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 28px; margin-bottom: 16px; }
+[data-scene="plataforma"] .arch-tool { display: flex; align-items: center; gap: 10px; min-width: 0; max-width: 100%; }
+[data-scene="plataforma"] .arch-tool .label { white-space: nowrap; }
+[data-scene="plataforma"] .arch { container-type: inline-size; }
+[data-scene="plataforma"] .arch-svg { display: block; width: 100%; height: auto; margin: 0 auto; overflow: visible; font-family: var(--font-body); }
+[data-scene="plataforma"] .arch-svg.is-wide { max-width: 1060px; }
+[data-scene="plataforma"] .arch-svg.is-tall { display: none; max-width: 440px; }
+@container (max-width: 759px) {
+  [data-scene="plataforma"] .arch-svg.is-wide { display: none; }
+  [data-scene="plataforma"] .arch-svg.is-tall { display: block; }
+}
+@supports not (container-type: inline-size) {
+  @media (max-width: 900px) {
+    [data-scene="plataforma"] .arch-svg.is-wide { display: none; }
+    [data-scene="plataforma"] .arch-svg.is-tall { display: block; }
+  }
+}
+
+[data-scene="plataforma"] .arch-svg text { font-family: var(--font-body); }
+[data-scene="plataforma"] .arch-band { fill: var(--card); stroke: var(--line-strong); stroke-width: 1; }
+[data-scene="plataforma"] .arch-pill { fill: var(--cn-green-50); stroke: var(--cn-green-100); stroke-width: 1; }
+[data-scene="plataforma"] .arch-pill-t { font-size: 11.5px; font-weight: 600; fill: var(--cn-green-dark); }
+[data-scene="plataforma"] .arch-zone-box { fill: color-mix(in srgb, var(--cn-green-50) 55%, var(--card)); stroke: var(--cn-green); stroke-width: 1.25; stroke-dasharray: 6 4; }
+[data-scene="plataforma"] .arch-zone-t { font-size: 12px; font-weight: 600; fill: var(--cn-green-dark); }
+[data-scene="plataforma"] .arch-zone-t.is-sm { font-size: 11.5px; }
+[data-scene="plataforma"] .arch-prodigy { fill: var(--card); stroke: var(--cn-green); stroke-width: 1.5; }
+[data-scene="plataforma"] .arch-divider { fill: none; stroke: var(--line); stroke-width: 1; }
+[data-scene="plataforma"] .arch-brand { font-family: var(--font-head); font-size: 15px; font-weight: 700; fill: var(--cn-green-900); }
+[data-scene="plataforma"] .arch-h { font-family: var(--font-head); font-size: 13px; font-weight: 600; fill: var(--cn-green-900); }
+[data-scene="plataforma"] .arch-sub { font-size: 11.5px; fill: var(--muted); }
+[data-scene="plataforma"] .arch-mod { fill: var(--bg); stroke: var(--line); stroke-width: 1; }
+[data-scene="plataforma"] .arch-mod.is-approval { fill: var(--amber-50); stroke: var(--amber); stroke-dasharray: 4 3; }
+[data-scene="plataforma"] .arch-mt { font-size: 12.5px; font-weight: 600; fill: var(--ink); }
+[data-scene="plataforma"] .arch-mt.is-sm { font-size: 12px; }
+[data-scene="plataforma"] .arch-md { font-size: 11px; fill: var(--slate); }
+[data-scene="plataforma"] .arch-llm { fill: var(--card); stroke: var(--line-strong); stroke-width: 1.25; }
+[data-scene="plataforma"] .arch-llm.is-local { stroke: var(--cn-green); stroke-width: 1.5; }
+[data-scene="plataforma"] .arch-kicker { font-size: 9.5px; font-weight: 600; letter-spacing: .07em; fill: var(--muted); }
+[data-scene="plataforma"] .arch-llm-name { font-family: var(--font-head); font-size: 14px; font-weight: 700; fill: var(--cn-green-900); }
+[data-scene="plataforma"] .arch-exit { font-size: 11px; font-weight: 600; fill: var(--ink); }
+[data-scene="plataforma"] .arch-exit.is-local { fill: var(--ok); }
+[data-scene="plataforma"] .arch-tile { fill: var(--card); stroke: var(--line-strong); stroke-width: 1; }
+[data-scene="plataforma"] .arch-group { fill: color-mix(in srgb, var(--bg) 50%, var(--card)); stroke: var(--line); stroke-width: 1; }
+[data-scene="plataforma"] .arch-tt { font-size: 12px; font-weight: 600; fill: var(--ink); }
+[data-scene="plataforma"] .arch-note { font-size: 11px; font-weight: 500; fill: var(--slate); }
+[data-scene="plataforma"] .arch-sys-t { font-size: 11.5px; font-weight: 600; fill: var(--slate); }
+[data-scene="plataforma"] .arch-mode { font-size: 10.5px; font-weight: 600; fill: var(--muted); }
+[data-scene="plataforma"] .arch-mode.is-write { fill: var(--amber); }
+[data-scene="plataforma"] .arch-read { fill: none; stroke: var(--slate); stroke-width: 1.25; }
+[data-scene="plataforma"] .arch-write { fill: none; stroke: var(--amber); stroke-width: 1.25; stroke-dasharray: 5 4; }
+[data-scene="plataforma"] .arch-head { fill: var(--slate); }
+[data-scene="plataforma"] .arch-head.is-write { fill: var(--amber); }
+[data-scene="plataforma"] .arch-ico { color: var(--cn-green-dark); }
+[data-scene="plataforma"] .arch-ico.is-muted { color: var(--muted); }
+[data-scene="plataforma"] .arch-ico.is-amber { color: var(--amber); }
+[data-scene="plataforma"] .arch-ico.is-ok { color: var(--ok); }
+[data-scene="plataforma"] .arch-mark .bm-bg { fill: var(--cn-green-dark); }
+[data-scene="plataforma"] .arch-mark .bm-line { fill: none; stroke: var(--cn-green-50); stroke-width: 1.6; stroke-linejoin: round; }
+[data-scene="plataforma"] .arch-mark .bm-dot { fill: var(--cn-green-50); }
+
+[data-scene="plataforma"] .arch-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 12px; font-size: 12px; color: var(--slate); }
+[data-scene="plataforma"] .arch-legend .lg { display: inline-flex; align-items: center; gap: 6px; }
+[data-scene="plataforma"] .arch-lg { display: inline-block; flex: none; }
+[data-scene="plataforma"] .arch-lg-read { width: 18px; border-top: 1.5px solid var(--slate); }
+[data-scene="plataforma"] .arch-lg-write { width: 18px; border-top: 1.5px dashed var(--amber); }
+[data-scene="plataforma"] .arch-lg-zone { width: 14px; height: 10px; border: 1.25px dashed var(--cn-green); border-radius: 2px; background: var(--cn-green-50); }
+[data-scene="plataforma"] .arch-lg-approval { width: 14px; height: 10px; border: 1.25px dashed var(--amber); border-radius: 2px; background: var(--amber-50); }
+
+/* ---------------------------------------------------------------- Decisiones y listas */
+[data-scene="plataforma"] .plat-dec .card-body p { color: var(--slate); font-size: 13px; }
+[data-scene="plataforma"] .plat-dec .card-body p + p, [data-scene="plataforma"] .plat-dec .card-body p + ul { margin-top: 8px; }
+[data-scene="plataforma"] .plat-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13.5px; color: var(--ink); }
+[data-scene="plataforma"] .plat-list li { display: flex; align-items: flex-start; gap: 8px; }
+[data-scene="plataforma"] .plat-list .icon { margin-top: 2px; color: var(--cn-green); }
+[data-scene="plataforma"] .plat-list.is-limits { font-size: 13px; color: var(--slate); }
+[data-scene="plataforma"] .plat-list.is-limits .icon { color: var(--muted); }
+[data-scene="plataforma"] .plat-session { display: flex; align-items: flex-start; gap: 6px; margin-top: 10px !important; padding-top: 10px; border-top: 1px solid var(--line-soft); color: var(--ink) !important; font-size: 12.5px !important; }
+[data-scene="plataforma"] .plat-session .icon { flex: none; margin-top: 1px; color: var(--cn-green); }
+
+/* Preguntas de Sistemas */
+[data-scene="plataforma"] .faq-item + .faq-item { border-top: 1px solid var(--line-soft); }
+[data-scene="plataforma"] .faq-item > summary { display: flex; align-items: center; gap: 8px; padding: 12px 16px; list-style: none; cursor: pointer; font-size: 13.5px; font-weight: 600; color: var(--ink); }
+[data-scene="plataforma"] .faq-item > summary::-webkit-details-marker { display: none; }
+[data-scene="plataforma"] .faq-item > summary .icon { flex: none; color: var(--muted); transition: transform .15s var(--ease); }
+[data-scene="plataforma"] .faq-item[open] > summary .icon { transform: rotate(90deg); }
+[data-scene="plataforma"] .faq-item > summary:hover { background: var(--hover); }
+[data-scene="plataforma"] .faq-item > p { padding: 0 16px 14px 40px; color: var(--slate); font-size: 13px; max-width: 900px; }
+
+/* ---------------------------------------------------------------- Plan del piloto (semanas) */
+[data-scene="plataforma"] .gantt { border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
+[data-scene="plataforma"] .gantt-row { display: grid; grid-template-columns: minmax(0, 36%) minmax(0, 1fr); border-top: 1px solid var(--line-soft); }
+[data-scene="plataforma"] .gantt-row:first-child { border-top: 0; }
+[data-scene="plataforma"] .gantt-head { background: var(--bg); border-bottom: 1px solid var(--line); color: var(--slate); font-size: 12px; font-weight: 600; }
+[data-scene="plataforma"] .gantt-head + .gantt-row { border-top: 0; }
+[data-scene="plataforma"] .gantt-label { padding: 10px 14px; min-width: 0; }
+[data-scene="plataforma"] .gantt-head .gantt-label { padding-top: 7px; padding-bottom: 7px; }
+[data-scene="plataforma"] .gantt-label .sub { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; line-height: 1.4; }
+[data-scene="plataforma"] .gantt-label .sub.gantt-ms { display: flex; align-items: center; gap: 5px; color: var(--slate); }
+[data-scene="plataforma"] .gantt-ms .icon { color: var(--cn-green); }
+[data-scene="plataforma"] .gantt-track { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); align-items: center; }
+[data-scene="plataforma"] .gantt-cell { grid-row: 1; align-self: stretch; border-left: 1px solid var(--line-soft); }
+[data-scene="plataforma"] .gantt-head .gantt-cell { display: flex; align-items: center; justify-content: center; padding: 7px 0; font-variant-numeric: tabular-nums; }
+[data-scene="plataforma"] .gantt-bar { grid-row: 1; z-index: 1; display: flex; align-items: center; min-width: 0; height: 28px; margin: 0 4px; padding: 0 10px; border-radius: var(--r); background: var(--cn-green-100); color: var(--cn-green-dark); font-size: 12px; font-weight: 600; }
+[data-scene="plataforma"] .gantt-bar.is-last { background: var(--cn-green); color: var(--on-dark); }
+[data-scene="plataforma"] .gantt-bar-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---------------------------------------------------------------- Calculadora de horas */
+[data-scene="plataforma"] .calc-row { display: grid; grid-template-columns: minmax(0, 1fr) 96px 96px 124px minmax(170px, 24%); align-items: center; gap: 12px; padding: 10px 16px; border-top: 1px solid var(--line-soft); }
+[data-scene="plataforma"] .calc-head { border-top: 0; border-bottom: 1px solid var(--line); background: var(--bg); padding-top: 8px; padding-bottom: 8px; color: var(--slate); font-size: 12px; font-weight: 600; }
+[data-scene="plataforma"] .calc-head + .calc-row { border-top: 0; }
+[data-scene="plataforma"] .calc-case { min-width: 0; font-size: 13.5px; }
+[data-scene="plataforma"] .calc-sub { margin-top: 2px; color: var(--muted); font-size: 12px; }
+[data-scene="plataforma"] .calc-sub .link-btn { font-size: 12px; }
+[data-scene="plataforma"] .calc-lbl { display: none; }
+[data-scene="plataforma"] .calc-input { min-height: 32px; padding: 5px 8px; text-align: right; font-variant-numeric: tabular-nums; }
+[data-scene="plataforma"] .calc-input[aria-invalid="true"] { border-color: var(--cn-red); background: var(--cn-red-50); }
+[data-scene="plataforma"] .calc-input[data-warn="true"] { border-color: var(--amber); background: var(--amber-50); }
+[data-scene="plataforma"] .calc-out { display: flex; align-items: center; gap: 10px; min-width: 0; }
+[data-scene="plataforma"] .calc-bar { flex: 1; min-width: 40px; height: 8px; border-radius: var(--r-pill); background: var(--bg-sunken); overflow: hidden; }
+[data-scene="plataforma"] .calc-bar > span { display: block; height: 100%; border-radius: inherit; background: var(--cn-green); transition: width .2s var(--ease); }
+[data-scene="plataforma"] .calc-h { flex: none; min-width: 56px; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
+[data-scene="plataforma"] .calc-msg { display: inline-flex; align-items: flex-start; gap: 6px; font-size: 12.5px; font-weight: 600; line-height: 1.35; }
+[data-scene="plataforma"] .calc-msg .icon { flex: none; margin-top: 1px; }
+[data-scene="plataforma"] .calc-foot { padding: 14px 16px 16px; border-top: 1px solid var(--line); }
+[data-scene="plataforma"] .calc-note { margin-top: 10px; color: var(--muted); font-size: 12.5px; }
+
+/* ---------------------------------------------------------------- Registro de auditoría */
+[data-scene="plataforma"] .audit-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; }
+[data-scene="plataforma"] .audit-search { flex: 1 1 220px; max-width: 340px; min-height: 32px; padding: 5px 10px; }
+
+/* Caso del piloto y enlaces */
+[data-scene="plataforma"] .plat-go { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; text-align: left; }
+[data-scene="plataforma"] .plat-go .icon { width: 14px; height: 14px; }
+[data-scene="plataforma"] .calc-foot .stat-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* ---------------------------------------------------------------- Pantallas estrechas */
+@media (max-width: 720px) {
+  [data-scene="plataforma"] .arch-tools { gap: 10px; }
+  [data-scene="plataforma"] .arch-tool { flex-wrap: wrap; gap: 6px 10px; }
+  [data-scene="plataforma"] .gantt-head { display: none; }
+  [data-scene="plataforma"] .gantt-row { grid-template-columns: minmax(0, 1fr); }
+  [data-scene="plataforma"] .gantt-row + .gantt-row { border-top: 1px solid var(--line-soft); }
+  [data-scene="plataforma"] .gantt-track { margin: 0 14px 12px; height: 8px; border-radius: var(--r-pill); background: var(--bg-sunken); overflow: hidden; }
+  [data-scene="plataforma"] .gantt-cell { display: none; }
+  [data-scene="plataforma"] .gantt-bar { height: 8px; margin: 0; padding: 0; border-radius: var(--r-pill); }
+  [data-scene="plataforma"] .gantt-bar-t { display: none; }
+  [data-scene="plataforma"] .plat-case-seg, [data-scene="plataforma"] #plat-audit-seg { width: 100%; }
+  [data-scene="plataforma"] #plat-audit-seg .seg { display: flex; flex-wrap: wrap; width: 100%; overflow: visible; }
+  [data-scene="plataforma"] #plat-audit-seg .seg-btn { flex: 1 1 auto; justify-content: center; }
+  [data-scene="plataforma"] .plat-case-seg .seg { display: flex; flex-wrap: wrap; width: 100%; overflow: visible; }
+  [data-scene="plataforma"] .plat-case-seg .seg-btn { flex: 1 1 auto; justify-content: center; }
+  [data-scene="plataforma"] .plat-case .kv { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  [data-scene="plataforma"] .plat-case .kv dd + dt { margin-top: 8px; }
+  [data-scene="plataforma"] .calc-head { display: none; }
+  [data-scene="plataforma"] .calc-row { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; gap: 8px 10px; padding: 12px 14px; }
+  [data-scene="plataforma"] .calc-case, [data-scene="plataforma"] .calc-out { grid-column: 1 / -1; }
+  [data-scene="plataforma"] .calc-lbl { display: block; margin-bottom: 4px; color: var(--muted); font-size: 11.5px; line-height: 1.3; }
+  [data-scene="plataforma"] .audit-search { max-width: none; }
+  [data-scene="plataforma"] .faq-item > p { padding-left: 16px; }
+}

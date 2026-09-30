@@ -1,0 +1,91 @@
+/*
+ * Prodigy · Congelados de Navarra — tokens de diseño.
+ * Colores de la identidad de Congelados de Navarra (SPEC §2). No se usan
+ * colores sueltos fuera de este fichero: los derivados son mezclas de estos.
+ */
+:root {
+  /* Marca */
+  --cn-green: #496C60;
+  --cn-green-dark: #344E45;
+  --cn-green-900: #1F2E29;
+  --cn-green-50: #EEF3F1;
+  --cn-red: #BD3632;
+  --cn-red-50: #FBEDEC;
+
+  /* Estado */
+  --amber: #A8651A;
+  --amber-50: #FBF3E6;
+  --ok: #2F7D5B;
+  --ok-50: #EAF5EF;
+
+  /* Neutros */
+  --ink: #272C2C;
+  --slate: #4D5858;
+  --muted: #6E7777;
+  --line: #E1E4E2;
+  --bg: #F5F5F2;
+  --card: #FFFFFF;
+
+  /* Derivados (solo mezclas de los tokens anteriores) */
+  --cn-green-100: color-mix(in srgb, var(--cn-green) 13%, var(--card));
+  --cn-green-200: color-mix(in srgb, var(--cn-green) 30%, var(--card));
+  --red-100: color-mix(in srgb, var(--cn-red) 13%, var(--card));
+  --red-200: color-mix(in srgb, var(--cn-red) 32%, var(--card));
+  --amber-200: color-mix(in srgb, var(--amber) 32%, var(--card));
+  --ok-200: color-mix(in srgb, var(--ok) 32%, var(--card));
+  --line-strong: color-mix(in srgb, var(--ink) 19%, var(--card));
+  --line-soft: color-mix(in srgb, var(--line) 60%, var(--card));
+  --bg-sunken: color-mix(in srgb, var(--bg) 62%, var(--line));
+  --hover: color-mix(in srgb, var(--cn-green) 5%, var(--card));
+  --scrim: color-mix(in srgb, var(--cn-green-900) 46%, transparent);
+
+  /* Sobre el verde oscuro de la barra lateral */
+  --on-dark: var(--card);
+  --on-dark-2: color-mix(in srgb, var(--card) 76%, var(--cn-green-dark));
+  --on-dark-3: color-mix(in srgb, var(--card) 54%, var(--cn-green-dark));
+  --dark-hover: color-mix(in srgb, var(--card) 7%, var(--cn-green-dark));
+  --dark-active: color-mix(in srgb, var(--card) 13%, var(--cn-green-dark));
+  --dark-line: color-mix(in srgb, var(--card) 14%, var(--cn-green-dark));
+
+  /* Tipografía */
+  --font-head: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+  --fs-xs: 11.5px;
+  --fs-sm: 12.5px;
+  --fs-base: 14px;
+  --fs-md: 15px;
+  --fs-lg: 17px;
+  --fs-xl: 20px;
+  --fs-2xl: 24px;
+  --fs-3xl: 30px;
+
+  /* Espaciado (múltiplos de 4) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+
+  /* Radios, sombras, foco */
+  --r-sm: 4px;
+  --r: 6px;
+  --r-lg: 8px;
+  --r-xl: 10px;
+  --r-pill: 999px;
+  --shadow-1: 0 1px 2px color-mix(in srgb, var(--cn-green-900) 6%, transparent);
+  --shadow-2: 0 2px 6px color-mix(in srgb, var(--cn-green-900) 8%, transparent),
+              0 14px 36px color-mix(in srgb, var(--cn-green-900) 14%, transparent);
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--cn-green) 32%, transparent);
+
+  /* Estructura */
+  --sidebar-w: 248px;
+  --topbar-h: 56px;
+  --content-max: 1440px;
+  --presenter-w: 344px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}

@@ -1,0 +1,70 @@
+/*
+ * Escena «cuestionario» (Cuestionario de cliente) · estilos propios.
+ * Solo usa los tokens de tokens.css. El resto de la vista usa los componentes de app.css.
+ */
+
+/* Rejilla: lista de preguntas + panel de detalle fijo al desplazar (escritorio) */
+.cq-grid { align-items: start; }
+.cq-panel { min-width: 0; }
+.cq-panel .card-actions { gap: 6px; }
+/* El filtro de preguntas nunca ensancha la tarjeta: si no cabe, se desplaza dentro de su propio control */
+.cq-grid .card-actions { min-width: 0; max-width: 100%; }
+.cq-grid .card-actions .seg { max-width: 100%; }
+@media (max-width: 720px) {
+  #cq-questions .card-actions { flex: 1 1 100%; margin-left: 0; }
+}
+@media (min-width: 1024px) {
+  .cq-panel {
+    position: sticky;
+    top: calc(var(--topbar-h) + 16px);
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - var(--topbar-h) - 32px);
+  }
+  .cq-panel > .card-head, .cq-panel > .card-foot { flex: none; }
+  .cq-panel > .card-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+}
+
+/* Detalle de una pregunta */
+.cq-body { display: flex; flex-direction: column; gap: 18px; }
+.cq-label {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 10px;
+  margin-bottom: 8px; font-size: 12px; font-weight: 600; color: var(--muted);
+}
+.cq-label .lbl { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.cq-question { margin: 0; font-size: 14.5px; font-weight: 500; line-height: 1.55; color: var(--ink); }
+.cq-orig { margin: 8px 0 0; padding-left: 10px; border-left: 2px solid var(--line-strong); font-size: 13px; line-height: 1.5; color: var(--slate); }
+.cq-orig b { font-weight: 600; color: var(--muted); }
+.cq-answer {
+  padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--r);
+  background: color-mix(in srgb, var(--bg) 55%, var(--card));
+  font-size: 14px; line-height: 1.6; color: var(--ink); overflow-wrap: anywhere;
+}
+.cq-answer.is-approved { border-color: var(--ok-200); background: color-mix(in srgb, var(--ok-50) 60%, var(--card)); }
+.cq-answer.is-discarded { color: var(--muted); text-decoration: line-through; }
+
+/* Fuentes citadas y evidencia parcial */
+.cq-srcs { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: var(--r); }
+.cq-src { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; padding: 10px 12px; }
+.cq-src + .cq-src { border-top: 1px solid var(--line-soft); }
+.cq-src-n {
+  display: inline-grid; place-items: center; width: 20px; height: 20px; margin-top: 1px;
+  border-radius: var(--r-sm); background: var(--cn-green-50); color: var(--cn-green-dark);
+  font: 600 11px/1 var(--font-body);
+}
+.cq-src-main { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.cq-src-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; font-size: 13px; line-height: 1.4; }
+.cq-src-title { font-weight: 600; color: var(--ink); min-width: 0; }
+.cq-src-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.cq-quote { margin: 0; font-size: 13px; line-height: 1.55; color: var(--slate); overflow-wrap: anywhere; }
+.cq-why { margin: 0; font-size: 12.5px; line-height: 1.45; color: var(--muted); }
+.cq-missing { margin: 0; padding-left: 18px; font-size: 13px; color: var(--slate); }
+.cq-missing li + li { margin-top: 4px; }
+
+/* Pie del panel */
+.cq-foot-status { display: inline-flex; align-items: center; gap: 6px; min-width: 0; font-size: 12.5px; color: var(--slate); }
+.cq-foot-status .icon { color: var(--ok); }
+.cq-foot-status.tone-warn .icon { color: var(--amber); }
+.cq-foot-status.tone-muted .icon { color: var(--muted); }
+
+.cq-empty { padding: 16px; text-align: center; }

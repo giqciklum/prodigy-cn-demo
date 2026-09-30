@@ -1,3 +1,148 @@
 <!doctype html>
-<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Prodigy · Congelados de Navarra</title><meta name="description" content="Una demostración interactiva de workflows, trazabilidad y decisiones con aprobación humana. Datos sintéticos."><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23101f2c'/%3E%3Cpath d='M8 7h10a7 7 0 010 14h-4v5H8zm6 6v3h4a1.5 1.5 0 000-3z' fill='%237cf4c6'/%3E%3C/svg%3E"><link rel="stylesheet" href="styles.css"></head>
-<body><a class="skip" href="#main">Saltar al contenido</a><aside class="sidebar"><a class="brand" href="#operations" aria-label="Prodigy inicio"><span class="brandmark">p</span>prodigy<span class="brand-dot">.</span></a><div class="workspace-label">INDUSTRY EXPERIENCE</div><div class="client">Congelados<br>de Navarra</div><div class="workspace-sub">Calidad · Producción · Logística</div><nav aria-label="Secciones de la demo"><button data-nav="operations" class="active"><span>01</span>Centro de operaciones</button><button data-nav="studio"><span>02</span>De palabras a workflow</button><button data-nav="case"><span>03</span>Reclamación de cliente</button><button data-nav="knowledge"><span>04</span>Conocimiento con fuentes</button><button data-nav="platform"><span>05</span>Por qué Prodigy</button></nav><div class="sidebar-foot"><div class="mode-label"><span class="status-dot"></span>Entorno de demostración</div><p>Datos ficticios. Sin conexión<br>a sistemas de producción.</p><a href="manual-presentacion.pdf" target="_blank" rel="noopener">Manual de presentación ↗</a><br><a href="demo-sin-conexion.zip" download style="display:inline-block;margin-top:12px">Copia sin conexión ↓</a></div></aside><div class="workspace"><header class="topbar"><div><span class="mobile-brand">prodigy.</span><span class="crumb">WORKSPACE /</span> <span id="crumb">Operaciones</span></div><div class="top-actions"><span class="badge neutral">SIMULACIÓN</span><button class="text-button" id="presenter">Guion</button><button class="icon-button" id="fullscreen" aria-label="Pantalla completa" title="Pantalla completa">⛶</button><button class="text-button" id="reset">Reiniciar demo</button></div></header><main id="main" tabindex="-1"><div class="page-head"><div><div class="eyebrow">FUSTIÑANA / ESCENARIO 29 SEP 2026</div><h1>Centro de operaciones</h1><p>De una señal en planta a una decisión con evidencia.</p></div><button class="primary" data-action="open-studio">Crear un workflow</button></div><div class="kpis"><article><span>Palés en la cámara C-07</span><strong>38<small>palés</small></strong><div>6 lotes por evaluar</div></article><article><span>Temperatura máxima · aire</span><strong class="danger-text">−13,9<small>°C</small></strong><div>Pico del escenario a las 06:25</div></article><article><span>Exposición sobre −18 °C</span><strong>50<small>min</small></strong><div>Umbral ilustrativo de la demo</div></article><article><span>Decisiones de Calidad</span><strong>01<small>pendiente</small></strong><div>La aprobación sigue en tus manos</div></article></div><div class="grid-main"><section class="card"><div class="card-head"><div><h2>Cadena de frío · Cámara C-07</h2><p>Temperatura de aire · lectura sintética cada 5 minutos</p></div><span class="badge danger">Requiere evaluación</span></div><div class="chart" id="initial-chart"></div><div class="chart-foot"><span><i class="line-key"></i>Temperatura registrada</span><span><i class="line-key dashed"></i>Umbral de la demo −18 °C</span><span>05:00 – 07:00</span></div></section><section class="focus-card"><span class="eyebrow">UN AVISO, VARIOS EQUIPOS</span><h2>¿Qué lotes están expuestos y quién decide?</h2><p>Relaciona la alarma con el stock, reúne la trazabilidad y prepara una propuesta para Calidad.</p><div class="mini-flow"><span>Señal</span><span>Contexto</span><span>Decisión</span></div><button class="primary" data-action="open-studio">Diseñar la respuesta</button><small>Recorrido recomendado · 10 minutos</small></section></div></main><footer>Demostración conceptual para Congelados de Navarra · Incidentes, procedimientos y resultados ficticios.</footer></div><div id="toast" role="status"></div><dialog id="modal"></dialog><script src="data.js"></script><script src="app.js"></script></body></html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#344E45">
+  <title>Prodigy · Congelados de Navarra</title>
+  <meta name="description" content="Consola de Prodigy configurada para Congelados de Navarra. Demostración con datos sintéticos preparada por Ciklum.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Crect width='26' height='26' rx='6' fill='%23344E45'/%3E%3Cpath d='M8.5 8.5 17.5 13 8.5 17.5' fill='none' stroke='%23EEF3F1' stroke-width='1.6'/%3E%3Ccircle cx='8.5' cy='8.5' r='2.6' fill='%23EEF3F1'/%3E%3Ccircle cx='17.5' cy='13' r='2.6' fill='%23EEF3F1'/%3E%3Ccircle cx='8.5' cy='17.5' r='2.6' fill='%23EEF3F1'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/scene-cuestionario.css">
+  <link rel="stylesheet" href="assets/css/plantmap.css">
+  <link rel="stylesheet" href="assets/css/scene-alarma.css">
+  <link rel="stylesheet" href="assets/css/scene-plataforma.css">
+  <link rel="stylesheet" href="assets/css/scene-procedimientos.css">
+  <link rel="stylesheet" href="assets/css/scene-retirada.css">
+  <link rel="stylesheet" href="assets/css/scene-workflow.css">
+  <link rel="stylesheet" href="assets/css/scene-reclamacion.css">
+</head>
+<body>
+  <a class="skip-link" href="#view">Saltar al contenido</a>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar" aria-label="Navegación principal">
+      <div class="sidebar-inner">
+        <a class="brand" href="#turno" aria-label="Prodigy · inicio">
+          <svg class="brand-mark" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
+            <rect class="bm-bg" width="26" height="26" rx="6"/>
+            <path class="bm-line" d="M8.5 8.5 17.5 13 8.5 17.5"/>
+            <circle class="bm-dot" cx="8.5" cy="8.5" r="2.6"/>
+            <circle class="bm-dot" cx="17.5" cy="13" r="2.6"/>
+            <circle class="bm-dot" cx="8.5" cy="17.5" r="2.6"/>
+          </svg>
+          <span class="brand-name">Prodigy</span>
+        </a>
+
+        <div class="ws" title="Espacio de trabajo">
+          <span class="ws-avatar" aria-hidden="true">CN</span>
+          <div>
+            <div class="ws-name">Congelados de Navarra</div>
+            <div class="ws-sub">Planta de Fustiñana</div>
+          </div>
+        </div>
+
+        <nav class="nav" id="nav" aria-label="Secciones"></nav>
+
+        <div class="sidebar-foot">
+          <button type="button" class="side-link" id="audit-link"><span data-icon="history" data-size="18"></span><span>Registro de auditoría</span><span class="side-count" id="audit-count">0</span></button>
+          <div class="me">
+            <span class="me-avatar" aria-hidden="true">RC</span>
+            <div>
+              <div class="me-name">Responsable de Calidad de turno</div>
+              <div class="me-sub">Calidad · Fustiñana</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <div class="scrim" id="scrim"></div>
+
+    <div class="workspace">
+      <header class="topbar">
+        <button type="button" class="icon-btn menu-btn" id="menu-btn" aria-label="Abrir la navegación" aria-controls="sidebar" aria-expanded="false"><span data-icon="menu"></span></button>
+        <nav class="crumbs" aria-label="Ruta">
+          <span class="crumb crumb-root">Congelados de Navarra</span><span data-icon="chevron-right" data-size="14"></span>
+          <span class="crumb" id="crumb-section">Operación</span><span data-icon="chevron-right" data-size="14"></span>
+          <span class="crumb cur" id="crumb-title" aria-current="page">Resumen del turno</span>
+        </nav>
+        <div class="topbar-right">
+          <span class="clock" title="Hora de planta en Fustiñana"><span data-icon="clock" data-size="15"></span><span id="clock-text">29/09/2026 · 07:05</span></span>
+          <button type="button" class="env-chip" id="env-chip" title="Datos sintéticos · acciones simuladas"><span class="dot"></span><span class="env-text">Demostración</span><span class="env-short">Demo</span></button>
+          <button type="button" class="btn btn-ghost btn-sm" id="presenter-btn" aria-pressed="false" title="Modo presentador (P)"><span data-icon="presentation" data-size="16"></span><span class="lbl">Presentador</span><kbd>P</kbd></button>
+          <button type="button" class="btn btn-ghost btn-sm" id="reset-btn" title="Reiniciar demo"><span data-icon="rotate-ccw" data-size="16"></span><span class="lbl">Reiniciar demo</span></button>
+        </div>
+      </header>
+
+      <main class="main" id="view" tabindex="-1"></main>
+
+      <footer class="footer">
+        <div class="footer-inner">
+          <span>Demostración con datos sintéticos · acciones simuladas · preparado por Ciklum</span>
+          <button type="button" class="link-btn" id="about-btn">Acerca de esta demo</button>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <aside class="presenter" id="presenter" aria-label="Modo presentador" aria-hidden="true">
+    <div class="presenter-head">
+      <div>
+        <div class="presenter-kicker"><span data-icon="presentation" data-size="14"></span>Modo presentador</div>
+        <div class="presenter-scene" id="presenter-scene"></div>
+      </div>
+      <button type="button" class="icon-btn" id="presenter-close" aria-label="Cerrar el modo presentador"><span data-icon="x"></span></button>
+    </div>
+    <div class="presenter-body">
+      <h3 class="presenter-h">Qué decir</h3>
+      <ul class="presenter-say" id="presenter-say"></ul>
+      <h3 class="presenter-h">Siguiente clic</h3>
+      <div class="presenter-next"><span data-icon="arrow-right" data-size="18"></span><span id="presenter-next"></span></div>
+    </div>
+    <div class="presenter-foot">
+      <div class="presenter-nav">
+        <button type="button" class="btn btn-secondary btn-sm" id="presenter-prev"></button>
+        <button type="button" class="btn btn-secondary btn-sm" id="presenter-fwd"></button>
+      </div>
+      <div class="presenter-meta">
+        <span data-icon="clock" data-size="14"></span><span>Tiempo</span><span class="timer" id="presenter-timer">00:00</span>
+        <button type="button" class="link-btn" id="presenter-timer-reset">Poner a cero</button>
+      </div>
+      <div class="presenter-meta">
+        <span data-icon="fast-forward" data-size="14"></span><span>Animaciones</span>
+        <div class="seg" role="group" aria-label="Ritmo de las animaciones">
+          <button type="button" class="seg-btn" data-speed="1" aria-pressed="true">Normal</button>
+          <button type="button" class="seg-btn" data-speed="3" aria-pressed="false">Rápidas</button>
+        </div>
+      </div>
+      <div class="presenter-keys">
+        <span><kbd>P</kbd> mostrar u ocultar</span>
+        <span><kbd><span data-icon="chevron-left" data-size="11"></span></kbd> <kbd><span data-icon="chevron-right" data-size="11"></span></kbd> cambiar de escena</span>
+        <a href="manual.pdf" target="_blank" rel="noopener">Manual (PDF)</a>
+      </div>
+    </div>
+  </aside>
+
+  <dialog class="modal" id="modal" aria-labelledby="modal-title"></dialog>
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <noscript><p style="padding:24px">Esta demostración necesita JavaScript activado.</p></noscript>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/plantmap.js"></script>
+  <script src="assets/js/scenes/turno.js"></script>
+  <script src="assets/js/scenes/workflow.js"></script>
+  <script src="assets/js/scenes/alarma.js"></script>
+  <script src="assets/js/scenes/reclamacion.js"></script>
+  <script src="assets/js/scenes/retirada.js"></script>
+  <script src="assets/js/scenes/cuestionario.js"></script>
+  <script src="assets/js/scenes/procedimientos.js"></script>
+  <script src="assets/js/scenes/plataforma.js"></script>
+</body>
+</html>

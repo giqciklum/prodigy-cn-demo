@@ -1,0 +1,32 @@
+/*
+ * Escena «reclamacion» · reparto de columnas según el ancho real del área de trabajo.
+ * Con el panel del presentador abierto (1280–1512 px) el contenido se estrecha sin que cambie el
+ * ancho de la ventana, así que se usan consultas de contenedor en lugar de media queries.
+ * Solo tokens de tokens.css; sin colores propios.
+ */
+.rc-wrap { container-type: inline-size; container-name: rc; }
+
+/* Filas de dos columnas (correo + ficha, respuesta + aprobación): una columna si no caben. */
+@container rc (max-width: 900px) {
+  .rc-wrap .rc-split { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Ejecución del workflow: grafo y registro. */
+.rc-run-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); align-items: start; }
+.rc-run-side { min-width: 0; }
+.rc-run-side:empty { display: none; }
+
+/* Ancho medio: grafo vertical a la izquierda y registro a la derecha, los dos a la vista. */
+@container rc (min-width: 700px) and (max-width: 1100px) {
+  .rc-run-grid.has-side { grid-template-columns: minmax(240px, 4fr) minmax(0, 8fr); }
+}
+
+/* Estrecho: el registro (durante la ejecución) y las cifras (después) van antes que el grafo vertical. */
+@container rc (max-width: 699px) {
+  .rc-run-grid.has-side .rc-run-side { order: -1; }
+}
+
+/* Cifras del análisis: 2 × 2 cuando van en la columna lateral o en móvil (sin huecos vacíos). */
+@container rc (max-width: 1100px) {
+  .rc-run-side .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
