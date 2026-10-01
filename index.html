@@ -21,6 +21,8 @@
   <link rel="stylesheet" href="assets/css/scene-retirada.css">
   <link rel="stylesheet" href="assets/css/scene-workflow.css">
   <link rel="stylesheet" href="assets/css/scene-reclamacion.css">
+  <script src="assets/i18n/en.js"></script>
+  <script src="assets/js/i18n.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#view">Saltar al contenido</a>
@@ -72,6 +74,10 @@
           <span class="crumb cur" id="crumb-title" aria-current="page">Resumen del turno</span>
         </nav>
         <div class="topbar-right">
+          <div class="language-switch" role="group" aria-label="Idioma / Language">
+            <button type="button" data-language="es" lang="es" aria-label="Mostrar en español" aria-pressed="true">ESP</button>
+            <button type="button" data-language="en" lang="en" aria-label="Show in English" aria-pressed="false">ENG</button>
+          </div>
           <span class="clock" title="Hora de planta en Fustiñana"><span data-icon="clock" data-size="15"></span><span id="clock-text">29/09/2026 · 07:05</span></span>
           <button type="button" class="env-chip" id="env-chip" title="Datos sintéticos · acciones simuladas"><span class="dot"></span><span class="env-text">Demostración</span><span class="env-short">Demo</span></button>
           <button type="button" class="btn btn-ghost btn-sm" id="presenter-btn" aria-pressed="false" title="Modo presentador (P)"><span data-icon="presentation" data-size="16"></span><span class="lbl">Presentador</span><kbd>P</kbd></button>

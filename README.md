@@ -1,6 +1,6 @@
 # Prodigy · Congelados de Navarra
 
-Simulación web de Prodigy para Congelados de Navarra (planta de Fustiñana): resumen del turno, workflows escritos en castellano, alarma de cámara con aprobación humana, reclamación de cliente con 8D, simulacro de retirada, cuestionario de cliente y preguntas a los procedimientos con citas.
+Simulación web de Prodigy para Congelados de Navarra (planta de Fustiñana): resumen del turno, workflows escritos en español o inglés, alarma de cámara con aprobación humana, reclamación de cliente con 8D, simulacro de retirada, cuestionario de cliente y preguntas a los procedimientos con citas.
 
 Es una **demostración con datos sintéticos**: lotes, palés, lecturas, reclamaciones y procedimientos los ha preparado Ciklum y las acciones (bloqueos, tickets, envíos) se simulan dentro del navegador.
 
@@ -9,6 +9,15 @@ Es una **demostración con datos sintéticos**: lotes, palés, lecturas, reclama
 - **Enlace:** https://giqciklum.github.io/prodigy-cn-demo/ (GitHub Pages; sin cuenta ni instalación).
 - **Sin conexión:** descargar `demo-sin-conexion.zip`, descomprimir y abrir `prodigy-cn-demo/index.html` con doble clic. Sin Internet usa las fuentes del sistema.
 - **Navegador:** Chrome o Edge actualizados (también Safari y Firefox). Pensada para portátil o proyector de 1280 a 1920 px; en móvil se adapta.
+
+## Idioma / Language
+
+Selector **ESP / ENG**, arriba a la derecha. La elección se recuerda y conserva la escena, los workflows publicados y las decisiones de la sesión.
+
+- Español: https://giqciklum.github.io/prodigy-cn-demo/?lang=es
+- English: https://giqciklum.github.io/prodigy-cn-demo/?lang=en
+
+The English view includes navigation, scenarios, results, source documents, presenter guidance and generated reports. Workflow examples and procedure questions accept English. All translations are bundled with the demo and work offline. No translation API or model runs in the browser. The downloadable presenter manual remains in Spanish and explains the language selector.
 
 ## Antes de presentar (2 minutos)
 
@@ -40,6 +49,8 @@ robots.txt  .nojekyll      solicita no indexar; publicación estática en GitHub
 manual.pdf                 manual de presentación
 assets/css/tokens.css      colores y medidas (identidad de Congelados de Navarra)
 assets/css/app.css         componentes
+assets/i18n/en.js          catálogo de textos en inglés, incluido en la copia offline
+assets/js/i18n.js          idioma, traducción de presentación y preferencia local
 assets/js/data.js          window.CN_DATA (generado desde el mundo sintético; no editar a mano)
 assets/js/core.js          núcleo: navegación, estado, auditoría, componentes (API en assets/js/README-core.md)
 assets/js/scenes/*.js      una escena por fichero

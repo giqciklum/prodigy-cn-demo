@@ -64,6 +64,14 @@
       text: `Cada día a las ${REPORT_TIME}, revisar las lecturas de los equipos de Fustiñana en Mapex y Galileo (túneles IQF, escaldadores, selectoras ópticas, compresores de amoniaco, evaporadores, envasadoras y detectores de metales) y compararlas con los umbrales de planta. Para cada equipo en aviso o crítico, abrir un ticket de mantenimiento con la acción recomendada, sin duplicar las órdenes que ya estén abiertas. Si un detector de metales (PCC) tiene la verificación vencida, proponer la retención del producto envasado desde la última verificación correcta, que debe aprobar el ${ROLE.quality_shift}. Publicar el resumen del parte en el canal de Teams de Mantenimiento.`
     }
   };
+  if (window.CN_I18N && CN_I18N.english) {
+    const quality = CN_I18N.text(ROLE.quality_shift);
+    const plantQuality = CN_I18N.text(ROLE.quality_plant);
+    const dispatch = CN_I18N.text(ROLE.dispatch_shift);
+    TEMPLATES['cadena-frio'].text = `When the air temperature in a frozen-product cold room at Fustiñana exceeds ${fmt.temp(LIMIT)} for more than ${HOLD_MIN} minutes, locate the pallets and lots present during the excursion and their planned shipments. Propose a quality hold on those pallets in SAP QM and Easy WMS, which the ${quality} must approve before it is applied. If the temperature exceeds ${fmt.temp(CRITICAL)}, classify the excursion as critical. Once the hold is approved, open a non-conformity in Elara with a draft 8D report and notify the ${dispatch} via Teams to hold the affected shipments.`;
+    TEMPLATES.reclamacion.text = `When a customer complaint about a foreign body arrives in the Quality inbox, register it in Elara (lot, product, defect and response deadline) and send an acknowledgement within ${ACK_H} h. Trace the lot backwards (grower, intake, line and foreign-body controls) and forwards (pallets and shipments). Prepare a draft 8D report under PNT-CAL-020, including similar complaints from the last ${HISTORY_MONTHS} months, and the customer response in their language. The ${plantQuality} must approve the customer response before it is sent; deliver the 8D report within ${REPORT_DAYS} working days.`;
+    TEMPLATES['parte-diario'].text = `Every day at ${REPORT_TIME}, review the readings from Fustiñana equipment in Mapex and Galileo (IQF tunnels, blanchers, optical sorters, ammonia compressors, evaporators, packing machines and metal detectors) and compare them with plant thresholds. For each machine in warning or critical state, open a maintenance ticket with the recommended action, without duplicating existing work orders. If a metal detector (CCP) has an overdue check, propose a hold on product packed since the last successful check, which the ${quality} must approve. Publish the daily report summary in the Maintenance Teams channel.`;
+  }
   const TEMPLATE_IDS = Object.keys(TEMPLATES);
 
   /* ================================================================ Catálogo de agentes del espacio */
@@ -102,9 +110,9 @@
   /* ================================================================ Reglas en español (sobre texto plegado) */
 
   // Negación en los 25 caracteres anteriores: «sin bloquear», «no abras…». «no conformidad» es un sustantivo.
-  const NEG_BEFORE = /\b(?:sin|nunca|tampoco|ni|no)\s+(?!conformidad)(?:\w+\s+){0,2}$/;
+  const NEG_BEFORE = /\b(?:without|never|not|do not|sin|nunca|tampoco|ni|no)\s+(?!conformidad)(?:\w+\s+){0,2}$/;
   // «bloquea el lote»: el lote es el objeto del bloqueo, no una petición de trazar.
-  const HOLD_BEFORE = /\b(?:bloque\w*|reten\w*|retien\w*|inmoviliz\w*)\s+(?:\w+\s+){0,2}$/;
+  const HOLD_BEFORE = /\b(?:block\w*|hold|quarantin\w*|bloque\w*|reten\w*|retien\w*|inmoviliz\w*)\s+(?:\w+\s+){0,2}$/;
 
   const STEP_RULES = [
     ['cold_chain_monitor', [[/cadena de frio/], [/\bcamaras?\b/], [/\btemperaturas?\b/], [/\bgrados\b/], [/\bexcursion(?:es)?\b/], [/\brotura de(?:l)? frio\b/], [/\b(?:pierd|perd)\w*\s+(?:el\s+|de\s+)?frio\b/]]],
@@ -127,6 +135,29 @@
     quality_incident: [/\bno conformidad\b/, /\b8d\b/, /\bincidencias?\b/, /\bpublic\w* el resumen\b/, /\bavis(?:ar|e|a|en)\b/],
     notifier: [/\brespuesta al cliente\b/, /\bresponder al cliente\b/, /\bcontestar al cliente\b/]
   };
+  // English rules are additive: saved Spanish workflows remain usable in either language.
+  const EN_STEPS = {
+    cold_chain_monitor: /\bcold (?:chain|rooms?)\b|\btemperatures?\b|\bexcursions?\b/,
+    complaint_intake: /\bcomplaints?\b|\bforeign[- ]bod(?:y|ies)\b/,
+    cn_plant_monitor: /\bdaily report\b|\bequipment\b|\biqf tunnels?\b|\bmetal detectors?\b|\bmaintenance tickets?\b/,
+    campaign_planner: /\bcampaign\b|\bharvest\b|\bfield intake\b/,
+    lot_traceability: /\btrace(?:ability)?\b|\blocate\b|\bbackwards?\b|\bforwards?\b/,
+    quality_hold: /\b(?:quality hold|hold on|hold the|block(?:ing)?|quarantine)\b/,
+    quality_incident: /\bnon[- ]conformit(?:y|ies)\b|\b8d\b|\bnotify\b|\bpublish\b/,
+    notifier: /\bcustomer response\b|\brespond to the customer\b|\breply to the customer\b/
+  };
+  STEP_RULES.forEach(([id,rules])=>rules.push([EN_STEPS[id]]));
+  const EN_STRONG = {
+    cold_chain_monitor: /\bconfirm\b|\bclassify\b|\bmonitor\b/,
+    complaint_intake: /\bregister\b|\bextract\b/,
+    cn_plant_monitor: /\breview\b|\breadings\b|\bmaintenance ticket\b/,
+    campaign_planner: /\bplan\b/,
+    lot_traceability: /\btrace\b|\blocate\b|\bidentify\b/,
+    quality_hold: /\bquality hold\b|\bhold on\b|\bblock\b|\bquarantine\b/,
+    quality_incident: /\bnon[- ]conformity\b|\b8d\b|\bnotify\b|\bpublish\b/,
+    notifier: /\bcustomer response\b|\brespond to the customer\b/
+  };
+  Object.entries(EN_STRONG).forEach(([id,re])=>STRONG[id].push(re));
   const MULTI = { cn_plant_monitor: 2 };
 
   const OUT_OF_SCOPE = [
@@ -149,6 +180,12 @@
       body: 'El texto pide cambiar consignas o arrancar y parar equipos. Prodigy lee Galileo/SCADA y Mapex, pero no escribe en el control de planta: esos cambios los hace el personal de planta desde su sistema.'
     }
   ];
+  const EN_SCOPE = [
+    /\b(?:buy|sell|trade|invest)\b[^.;]{0,60}\b(?:stocks?|shares?|bitcoin|crypto|currencies)\b|\b(?:bank transfer|transfer money)\b/,
+    /\b(?:evaluate|score|rank|monitor|dismiss|fire)\b[^.;]{0,45}\b(?:workers?|employees?|staff|people|operators?)\b/,
+    /\b(?:change|adjust|lower|raise)\b[^.;]{0,35}\bsetpoints?\b|\b(?:start|stop|turn off|switch off)\b[^.;]{0,30}\b(?:compressors?|evaporators?|tunnels?|fans?|blanchers?)\b/
+  ];
+  OUT_OF_SCOPE.forEach((rule,i)=>{rule.re=new RegExp(rule.re.source+'|'+EN_SCOPE[i].source);});
   const NOT_BUILT = {
     'sin-disparador': { title: 'Falta el disparador', body: 'Reconozco pasos, pero no cuándo debe activarse el workflow. Indica el disparador, por ejemplo «Cuando la temperatura de una cámara supere…» o «Cada día a las 06:00…».' },
     'sin-pasos': { title: 'Sin pasos reconocibles', body: `Entiendo cuándo debe activarse, pero ningún paso corresponde a un agente del espacio ${SPACE}.` },
@@ -163,6 +200,15 @@
     ['line_maintenance', /\bmantenimiento de linea\b/],
     ['campaign_manager', /\bjefe de campana\b/]
   ];
+  const EN_ROLES = {
+    quality_shift: /\bshift quality (?:manager|lead)\b/,
+    quality_plant: /\bplant quality (?:manager|lead)\b/,
+    dispatch_shift: /\bdispatch shift (?:manager|lead)\b/,
+    refrigeration_maintenance: /\brefrigeration maintenance\b/,
+    line_maintenance: /\bline maintenance\b/,
+    campaign_manager: /\bcampaign manager\b/
+  };
+  ROLE_PATTERNS.forEach(row=>{row[1]=new RegExp(row[1].source+'|'+EN_ROLES[row[0]].source);});
   const QUALITY_ROLES = ['quality_shift', 'quality_plant'];
 
   /* Prueba de activación: grupos de palabras por plantilla (mismo reparto que las frases del workflow). */
@@ -176,7 +222,7 @@
     reclamacion: [
       { re: /\breclam\w*|\bquej\w*|\bcomplaint\b/, w: 0.35, label: 'reclamación' },
       { re: /\bclientes?\b|\bcustomer\b|\bretailer\b/, w: 0.2, label: 'cliente' },
-      { re: /\bcuerpos? extran\w*|\bpiedras?\b|\bstone\b|\bmetal\w*|\bplastico\w*|\bdefecto\w*/, w: 0.25, label: 'defecto' },
+      { re: /\bforeign[- ]bod|\bcuerpos? extran\w*|\bpiedras?\b|\bstone\b|\bmetal\w*|\bplastico\w*|\bdefecto\w*/, w: 0.25, label: 'defecto' },
       { re: /\blotes?\b|\bl\d{2}-\d{3}/, w: 0.12, label: 'lote' }
     ],
     'parte-diario': [
@@ -187,6 +233,12 @@
     ]
   };
 
+  const EN_MATCH = {
+    'cadena-frio': [/\bcold rooms?\b/, /\btemperature\b|\bcold\b|\bdegrees\b/, /\balarm\b|\bexcursion\b|\bexceeds?\b|\breads?\b|\brising\b|\brises?\b|\brose\b/, /\bfustinana\b/],
+    reclamacion: [/\bcomplaints?\b/, /\bcustomer\b/, /\bforeign[- ]bod(?:y|ies)\b|\bstone\b|\bplastic\b|\bdefect\b/, /\blots?\b|\bbatch\b/],
+    'parte-diario': [/\breport\b/, /\bequipment\b|\bplant\b|\bmachines?\b/, /\bdaily\b|\btoday\b|\bshift\b/, /\bfustinana\b/]
+  };
+  Object.entries(EN_MATCH).forEach(([id,list])=>MATCH_GROUPS[id].forEach((g,i)=>{g.re=new RegExp(g.re.source+'|'+list[i].source);}));
   /* ================================================================ Texto: plegado, cláusulas y frases */
 
   const DASHES = /[‐-―−]/;
@@ -281,8 +333,8 @@
     return hits.sort((a, z) => a.pos - z.pos || a.order - z.order);
   }
 
-  const TRIGGER_WORDS = /\b(?:cuando|cada vez que|siempre que|en cuanto|ante (?:un|una|el|la|cualquier))\s/;
-  const SCHEDULE_WORDS = /\b(?:cada dia|todos los dias|diariamente|cada manana|cada noche|cada turno|cada semana|cada hora|cada lunes)\b/;
+  const TRIGGER_WORDS = /\b(?:when|whenever|on receipt of|cuando|cada vez que|siempre que|en cuanto|ante (?:un|una|el|la|cualquier))\s/;
+  const SCHEDULE_WORDS = /\b(?:every day|daily|every morning|every night|every shift|every week|every hour|every monday|cada dia|todos los dias|diariamente|cada manana|cada noche|cada turno|cada semana|cada hora|cada lunes)\b/;
   function findTrigger(src, f, b) {
     let m = TRIGGER_WORDS.exec(f);
     let type = 'evento';
@@ -351,9 +403,9 @@
   }
   function minutesIn(f, from, to) {
     const seg = f.slice(from, to);
-    let m = /(\d{1,3})\s*(?:minutos|mins?)\b/.exec(seg);
+    let m = /(\d{1,3})\s*(?:minutes?|minutos|mins?)\b/.exec(seg);
     if (m) return Number(m[1]);
-    m = /(\d{1,2})\s*(?:horas?|h)\b/.exec(seg);
+    m = /(\d{1,2})\s*(?:hours?|horas?|h)\b/.exec(seg);
     if (m) return Number(m[1]) * 60;
     if (/\bmedia hora\b/.test(seg)) return 30;
     if (/\bcuarto de hora\b/.test(seg)) return 15;
@@ -368,7 +420,7 @@
     return best;
   }
 
-  const APPROVE_RE = /\b(?:aprob\w*|aprueb\w*|autoriz\w*|valid(?:a|e|ar|ado|ada)\b)/;
+  const APPROVE_RE = /\b(?:approv\w*|authoris\w*|authoriz\w*|aprob\w*|aprueb\w*|autoriz\w*|valid(?:a|e|ar|ado|ada)\b)/;
   function findApproval(src, f, b) {
     const g = new RegExp(APPROVE_RE.source, 'g');
     let m;
@@ -376,8 +428,8 @@
     while ((m = g.exec(f))) {
       const pos = m.index;
       const before = f.slice(Math.max(0, pos - 32), pos);
-      if (/\b(?:una vez|tras|despues de)\s+$/.test(before)) continue;
-      if (/\b(?:sin|nunca|ni|no(?!\s+conformidad))\s+(?:\w+\s+){0,3}$/.test(before)) { if (!neg) neg = { pos, span: spanAt(src, b, pos) }; continue; }
+      if (/\b(?:once|after|una vez|tras|despues de)\s+$/.test(before)) continue;
+      if (/\b(?:without|never|not|sin|nunca|ni|no(?!\s+conformidad))\s+(?:\w+\s+){0,3}$/.test(before)) { if (!neg) neg = { pos, span: spanAt(src, b, pos) }; continue; }
       return { pos, span: spanAt(src, b, pos), negated: neg };
     }
     return neg ? { pos: neg.pos, span: neg.span, negatedOnly: true, negated: neg } : null;
@@ -455,16 +507,16 @@
       values.scope = scoped ? `Cámara ${scoped[1].toUpperCase()}` : 'Cámaras de producto congelado de Fustiñana';
       values.scopeOne = scoped ? `la cámara ${scoped[1].toUpperCase()}` : 'una cámara de producto congelado de Fustiñana';
     } else if (domain === 'reclamacion') {
-      const ack = /\bacuse de recibo\b[^.;]{0,40}?(\d{1,3})\s*(?:h|horas)\b/.exec(f);
+      const ack = /\b(?:acknowledg(?:e)?ment|acuse de recibo)\b[^.;]{0,40}?(\d{1,3})\s*(?:h|horas)\b/.exec(f);
       if (ack) setV('ack', Number(ack[1]), 'texto'); else setV('ack', ACK_H, 'procedimiento');
-      const days = /(\d{1,2})\s*dias habiles\b/.exec(f);
+      const days = /(\d{1,2})\s*(?:working days|business days|dias habiles)\b/.exec(f);
       if (days) setV('days', Number(days[1]), 'texto', spanAt(src, b, days.index)); else setV('days', REPORT_DAYS, 'procedimiento');
-      const months = /(\d{1,2})\s*meses\b/.exec(f);
+      const months = /(\d{1,2})\s*(?:months|meses)\b/.exec(f);
       if (months) setV('months', Number(months[1]), 'texto', spanAt(src, b, months.index)); else setV('months', HISTORY_MONTHS, 'politica');
-      values.defect = /\bcuerpos? extran/.test(f.slice(trig.start, trig.end)) ? 'cuerpo extraño' : null;
+      values.defect = /\bforeign[- ]bod|\bcuerpos? extran/.test(f.slice(trig.start, trig.end)) ? 'cuerpo extraño' : null;
     } else if (domain === 'parte-diario') {
       if (trig.time) setV('time', trig.time, 'texto'); else setV('time', REPORT_TIME, 'politica');
-      const nd = /\bsin duplicar\b/.exec(f);
+      const nd = /\b(?:without duplicating|avoid duplicates|sin duplicar)\b/.exec(f);
       values.noDuplicate = !!nd;
       if (nd) spans.noDuplicate = spanAt(src, b, nd.index);
       const chan = /\bcanal de teams(?: de)?\s+([a-z]+)/.exec(f);
@@ -1139,7 +1191,7 @@
       icon: 'message-square',
       body: html`<ul class="wf-scen">${st.m.scenarios.map((s) => html`<li>${icon('message-square', 15)}<span>${upperFirst(s)}</span></li>`)}</ul>
         <div class="wf-subhead">Probar una frase</div>
-        <div class="wf-test"><input id="wf-test-input" class="input" type="text" value="${t.phrase}" aria-label="Frase de prueba" spellcheck="false"><button type="button" class="btn btn-secondary" data-action="test">${icon('search', 16)}<span>Probar</span></button></div>
+        <div class="wf-test"><input id="wf-test-input" class="input" type="text" value="${window.CN_I18N ? CN_I18N.text(t.phrase) : t.phrase}" aria-label="Frase de prueba" spellcheck="false"><button type="button" class="btn btn-secondary" data-action="test">${icon('search', 16)}<span>Probar</span></button></div>
         <div class="wf-test-result" id="wf-test-result">${testResult(t)}</div>`
     });
   }

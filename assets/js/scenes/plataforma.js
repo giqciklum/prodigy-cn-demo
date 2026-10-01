@@ -252,7 +252,7 @@
   const tw = (t, size, weight) => App.textWidth(t, size, weight || 400);
 
   function wrapLines(text, maxW, size, weight, maxLines) {
-    const words = String(text || '').split(/\s+/).filter(Boolean);
+    const words = (window.CN_I18N ? CN_I18N.text(String(text || '')) : String(text || '')).split(/\s+/).filter(Boolean);
     const lines = [];
     let cur = '';
     words.forEach((w) => {

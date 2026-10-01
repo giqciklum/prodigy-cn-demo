@@ -727,3 +727,11 @@ body.presenter-open .presenter { transform: none; visibility: visible; transitio
   .main { max-width: none; padding: 0; }
   body { background: var(--card); }
 }
+
+/* Language is always reachable, including narrow phones and presenter mode. */
+.language-switch { display: inline-flex; flex: none; padding: 2px; border: 1px solid var(--line); border-radius: 7px; background: var(--card); }
+.language-switch button { min-width: 38px; min-height: 32px; border: 0; border-radius: 4px; background: transparent; color: var(--slate); font: 600 11px/1 Inter, system-ui, sans-serif; cursor: pointer; }
+.language-switch button[aria-pressed="true"] { background: var(--cn-green-dark); color: #fff; }
+.language-switch button:focus-visible { outline: 2px solid var(--cn-green); outline-offset: 2px; }
+@media (max-width: 720px) { .topbar { flex-wrap: wrap; } .crumbs { min-width: 0; flex: 1; } .topbar-right { gap: 3px; } .language-switch button { min-width: 34px; } }
+@media print { .language-switch { display: none; } }

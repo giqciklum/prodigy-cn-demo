@@ -10,7 +10,9 @@
   const STORE_KEY = 'cn-demo-v2';
   const UI_KEY = 'cn-demo-v2-ui';
   const STATE_VERSION = 2;
-  const VERSION = '2.0';
+  const VERSION = '2.1';
+  const I18N = window.CN_I18N;
+  const t = (s) => I18N ? I18N.text(s) : s;
   const DEMO_EPOCH = Date.UTC(2026, 8, 29, 7, 5, 0); // martes 29/09/2026 07:05, hora de planta
   const STALE_MS = 4 * 3600 * 1000;
   const DEFAULT_ACTOR = (DATA.roles && DATA.roles.quality_shift) || 'Responsable de Calidad de turno';
@@ -21,7 +23,7 @@
 
   class SafeHTML {
     constructor(s) { this.s = String(s); }
-    toString() { return this.s; }
+    toString() { return I18N ? I18N.html(this.s) : this.s; }
   }
   const ESC_MAP = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
   function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, (c) => ESC_MAP[c]); }
@@ -191,8 +193,8 @@
       let [int, frac] = s.split('.');
       const neg = int.charAt(0) === '-';
       if (neg) int = int.slice(1);
-      int = int.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-      const out = int + (frac ? ',' + frac : '');
+      int = int.replace(/\B(?=(\d{3})+(?!\d))/g, I18N && I18N.english ? ',' : '.');
+      const out = int + (frac ? (I18N && I18N.english ? '.' : ',') + frac : '');
       return (neg && Number(s) !== 0 ? MINUS : '') + out;
     },
     int(v) { return fmt.num(Math.round(Number(v)), 0); },
@@ -564,19 +566,19 @@
     try {
       measureCtx = measureCtx || document.createElement('canvas').getContext('2d');
       measureCtx.font = `${weight || 400} ${size}px Inter, system-ui, -apple-system, 'Segoe UI', sans-serif`;
-      return measureCtx.measureText(String(text)).width * 1.04;
+      return measureCtx.measureText(t(String(text))).width * 1.04;
     } catch (e) {
       return String(text).length * size * 0.6;
     }
   }
   function ellipsize(text, maxW, size, weight) {
-    let t = String(text);
+    let t = I18N ? I18N.text(String(text)) : String(text);
     if (textWidth(t, size, weight) <= maxW) return t;
     while (t.length > 1 && textWidth(t + '…', size, weight) > maxW) t = t.slice(0, -1);
     return t.trimEnd() + '…';
   }
   function wrapText(text, maxW, size, weight, maxLines) {
-    const words = String(text || '').split(/\s+/).filter(Boolean);
+    const words = t(String(text || '')).split(/\s+/).filter(Boolean);
     const lines = [];
     let cur = '';
     words.forEach((w) => {
@@ -1418,7 +1420,7 @@
     try {
       const type = mime || 'text/plain';
       const needsCharset = /^text\/|json|csv|xml|html/.test(type) && !/charset/i.test(type);
-      const blob = content instanceof Blob ? content : new Blob([content], { type: needsCharset ? `${type};charset=utf-8` : type });
+      const blob = content instanceof Blob ? content : new Blob([I18N ? I18N.exportContent(content, type) : content], { type: needsCharset ? `${type};charset=utf-8` : type });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -1525,7 +1527,7 @@ ${signs ? `<div class="sign">${signs}</div>` : ''}
    * {title, subtitle, code, meta: [[k, v]], sections: [{heading, text | html | list | kv | table: {cols, rows} | callout}], signatures: [{role, note}], filename}
    */
   function printableReport(o) {
-    const doc = reportHTML(o);
+    const doc = I18N ? I18N.html(reportHTML(o)) : reportHTML(o);
     const fname = `${o.filename || slug(o.title)}.html`;
     const m = modal({
       title: o.title,
@@ -1716,7 +1718,7 @@ ${signs ? `<div class="sign">${signs}</div>` : ''}
       size: 'md',
       body: html`<div class="stack" style="gap:14px">${sections.map(([h, t]) => html`<div><div class="h3" style="font-size:14px">${h}</div><p class="slate mt-1">${t}</p></div>`)}<p class="muted small">Versión ${VERSION} · 29/09/2026 · preparado por Ciklum</p></div>`,
       actions: [
-        { label: 'Manual de presentación (PDF)', icon: 'file-text', variant: 'ghost', left: true, close: false, onClick: () => { window.open('manual.pdf', '_blank', 'noopener'); return false; } },
+        { label: 'Manual de presentación (PDF · ESP)', icon: 'file-text', variant: 'ghost', left: true, close: false, onClick: () => { window.open('manual.pdf', '_blank', 'noopener'); return false; } },
         { label: 'Registro de auditoría', icon: 'history', variant: 'secondary', onClick: () => { setTimeout(openAuditLog, 0); } },
         { label: 'Cerrar', variant: 'primary', autofocus: true }
       ]

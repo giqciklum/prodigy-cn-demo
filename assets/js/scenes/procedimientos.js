@@ -591,6 +591,7 @@
 
   /** Clasifica una pregunta: {type: 'intent'|'gap'|'generic'|'none', id, reason, cites} */
   function classify(question) {
+    if (window.CN_I18N) question = CN_I18N.queryToSpanish(question);
     prepareTerms();
     const bag = qBag(question);
     const exact = INTENTS.find((i) => K().normalize(i.q) === bag.norm.trim());
