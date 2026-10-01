@@ -12,7 +12,7 @@
   if(lang==='en'){const meta=document.querySelector('meta[name="description"]');if(meta)meta.content='Prodigy demonstration for Congelados de Navarra. Interactive scenarios with synthetic data, prepared by Ciklum.';}
   const english = lang === 'en';
   const messages = window.CN_EN || {};
-  const normalize = (s) => String(s).replace(/\s+/g, ' ').trim();
+  const normalize = (s) => String(s).replace(/\u2212/g, '-').replace(/\s+/g, ' ').trim();
   const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const entries = Object.entries(messages);
   const exact = new Map(entries.map(([a,b]) => [normalize(a),b]));
@@ -20,9 +20,9 @@
   const outputs = new Set(entries.filter(([a])=>!a.includes('⟦')).map(([,b])=>normalize(b)));
   const patterns = entries.filter(([a,b]) => a.includes('⟦') && /[a-zÀ-ÿ]{3}/i.test(a.replace(/⟦\d+⟧/g,'')))
     .sort((a,b)=>b[0].replace(/⟦\d+⟧/g,'').length-a[0].replace(/⟦\d+⟧/g,'').length)
-    .map(([a,b]) => {const ids=[]; const source=a.split(/(⟦\d+⟧)/).map(part=>{if(/^⟦\d+⟧$/.test(part)){ids.push(part);return '(.*?)';} return escapeRe(part);}).join('');return {re:new RegExp('^'+source+'$','u'),ids,to:b};});
+    .map(([a,b]) => {const ids=[]; const source=normalize(a).split(/(⟦\d+⟧)/).map(part=>{if(/^⟦\d+⟧$/.test(part)){ids.push(part);return '(.*?)';} return escapeRe(part);}).join('');return {re:new RegExp('^'+source+'$','iu'),ids,to:b};});
   const fragments = entries.filter(([a,b])=>a!==b && !a.includes('⟦') && a.length>=3 && !/[<>\[\]{}]/.test(a)).sort((a,b)=>b[0].length-a[0].length);
-  const fragmentRe = fragments.length ? new RegExp('(?<![\\p{L}\\p{N}_])(?:'+fragments.map(([a])=>escapeRe(a)).join('|')+')(?![\\p{L}\\p{N}_])','gu') : null;
+  const fragmentRe = fragments.length ? new RegExp('(?<![\\p{L}\\p{N}_-])(?:'+fragments.map(([a])=>escapeRe(a)).join('|')+')(?![\\p{L}\\p{N}_-])','gu') : null;
   const cache = new Map();
   function translate(s, depth) {
     if (!english || s == null || typeof s !== 'string' || !s.trim()) return s;
@@ -36,8 +36,10 @@
     if(n===n.toUpperCase() && folded.has(n.toLowerCase())) return folded.get(n.toLowerCase()).toUpperCase();
     if(outputs.has(n)) return s;
     if((depth||0)<4) for(const p of patterns){const m=p.re.exec(n);if(m){const vals={};p.ids.forEach((id,i)=>vals[id]=translate(m[i+1],(depth||0)+1));const out=p.to.replace(/⟦\d+⟧/g,id=>vals[id]??id);cache.set(n,out);return out;}}
+    if(/^\d+ de \d+$/.test(n)) return n.replace(' de ',' of ');
     const out=fragmentRe ? n.replace(fragmentRe,hit=>exact.get(hit)||hit) : s;
     if(cache.size>6000) cache.clear();
+    if(out===n)return s;
     cache.set(n,out); return out;
   }
   // Keep original spacing at boundaries of inline elements (strong, citations, etc.).

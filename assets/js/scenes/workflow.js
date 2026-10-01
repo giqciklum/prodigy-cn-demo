@@ -950,7 +950,8 @@
 
   /** Texto con los códigos de procedimiento sin partir (PNT-CAL-012, IT-MAN-DP-02). */
   function codes(text) {
-    return raw(esc(text).replace(/\b(PNT-CAL-\d{3}|IT-MAN-DP-\d{2})\b/g, '<span class="nowrap">$1</span>'));
+    const visible = window.CN_I18N ? CN_I18N.text(text) : text;
+    return raw(esc(visible).replace(/\b(PNT-CAL-\d{3}|IT-MAN-DP-\d{2})\b/g, '<span class="nowrap">$1</span>'));
   }
   function checksList(checks) {
     return html`<ul class="wf-checks">${checks.map((c) => html`<li class="is-${c.tone}" data-check="${c.id}">${icon(c.tone === 'ok' ? 'check-circle' : 'alert-triangle', 16)}<span>${codes(c.text)}</span></li>`)}</ul>`;
