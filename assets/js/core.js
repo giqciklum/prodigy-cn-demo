@@ -7,15 +7,16 @@
   'use strict';
 
   const DATA = window.CN_DATA || {};
-  const STORE_KEY = 'cn-demo-v2';
-  const UI_KEY = 'cn-demo-v2-ui';
+  const INDUSTRY = window.DEMO_INDUSTRY;
+  const STORE_KEY = 'cn-demo-v2' + (INDUSTRY && INDUSTRY.id !== 'frozen_food' ? '-' + INDUSTRY.id : '');
+  const UI_KEY = STORE_KEY + '-ui';
   const STATE_VERSION = 2;
-  const VERSION = '2.1';
+  const VERSION = '2.2';
   const I18N = window.CN_I18N;
   const t = (s) => I18N ? I18N.text(s) : s;
   const DEMO_EPOCH = Date.UTC(2026, 8, 29, 7, 5, 0); // martes 29/09/2026 07:05, hora de planta
   const STALE_MS = 4 * 3600 * 1000;
-  const DEFAULT_ACTOR = (DATA.roles && DATA.roles.quality_shift) || 'Responsable de Calidad de turno';
+  const DEFAULT_ACTOR = (INDUSTRY && INDUSTRY.id !== 'frozen_food' && INDUSTRY.text(INDUSTRY.profile.role)) || (DATA.roles && DATA.roles.quality_shift) || 'Responsable de Calidad de turno';
   const MINUS = '\u2212';
   const NBSP = '\u00A0';
 
@@ -1469,7 +1470,7 @@
     const meta = [['Código', o.code]].concat(o.meta || []).concat([['Generado', fmt.date(when, { time: true })]]).filter((m) => m && m[1] != null && m[1] !== '');
     while (meta.length % 3) meta.push(['', '']);
     const signs = (o.signatures || []).map((s) => `<div><strong>${esc(s.role)}</strong><br>${esc(s.note || 'Firma')}</div>`).join('');
-    return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(o.title)}</title>
+    return `<!doctype html><html lang="${I18N && I18N.english ? "en" : "es"}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(o.title)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&display=swap">
 <style>:root{${vars}}
 @page{size:A4;margin:16mm 14mm 16mm}
@@ -1514,7 +1515,7 @@ tr{break-inside:avoid}
 </style><script>if(window.self!==window.top)document.documentElement.classList.add('embedded');</script></head><body>
 <div class="toolbar"><span>${esc(o.title)}</span><button type="button" onclick="window.print()">Imprimir o guardar como PDF</button></div>
 <main class="page">
-<header class="rh"><div class="org">Congelados de Navarra · Planta de Fustiñana</div><div class="brand">Prodigy</div></header>
+<header class="rh"><div class="org">${esc(INDUSTRY ? INDUSTRY.profile.company + " · " + INDUSTRY.text(INDUSTRY.profile.site) : "Congelados de Navarra · Planta de Fustiñana")}</div><div class="brand">Prodigy</div></header>
 <h1>${esc(o.title)}</h1>${o.subtitle ? `<p class="subtitle">${esc(o.subtitle)}</p>` : ''}
 <dl class="meta">${meta.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${toHTML(v)}</dd></div>`).join('')}</dl>
 ${(o.sections || []).map(reportSection).join('')}
@@ -1704,6 +1705,7 @@ ${signs ? `<div class="sign">${signs}</div>` : ''}
     });
   }
   function openAbout() {
+    if (INDUSTRY && typeof INDUSTRY.openAbout === 'function') return INDUSTRY.openAbout();
     const sections = [
       ['Qué es', 'Una simulación interactiva de la consola de Prodigy, la plataforma de agentes de Ciklum, configurada para Congelados de Navarra. Se abre en el navegador, sin instalación y sin acceso a sistemas de Congelados de Navarra.'],
       ['Datos', 'Lotes, palés (SSCC), lecturas, reclamaciones y procedimientos son sintéticos y coherentes entre sí. Los ha preparado Ciklum para esta demostración; no proceden de Congelados de Navarra.'],
@@ -1884,7 +1886,7 @@ ${signs ? `<div class="sign">${signs}</div>` : ''}
     const i = v.findIndex((s) => s.id === current.id);
     const p = resolvePresenter();
     const sceneEl = document.getElementById('presenter-scene');
-    if (sceneEl) sceneEl.textContent = `${i + 1} de ${v.length} · ${current.nav}`;
+    if (sceneEl) sceneEl.textContent = `${i + 1} ${I18N && I18N.english ? "of" : "de"} ${v.length} · ${current.nav}`;
     const sayEl = document.getElementById('presenter-say');
     if (sayEl) sayEl.innerHTML = String(html`${p.say.map((t) => html`<li>${t}</li>`)}`);
     const nextEl = document.getElementById('presenter-next');
@@ -1931,7 +1933,7 @@ ${signs ? `<div class="sign">${signs}</div>` : ''}
     if (current) {
       if (sec) sec.textContent = current.section;
       if (tit) tit.textContent = current.title;
-      document.title = `${current.title} · Prodigy · Congelados de Navarra`;
+      document.title = `${current.title} · Prodigy · ${INDUSTRY ? INDUSTRY.profile.company : "Congelados de Navarra"}`;
     }
     const cnt = document.getElementById('audit-count');
     if (cnt) cnt.textContent = String(state.audit.length);
@@ -1968,7 +1970,7 @@ ${signs ? `<div class="sign">${signs}</div>` : ''}
     if (o.confirm !== false) {
       const ok = await confirm({
         title: 'Reiniciar demo',
-        body: html`<p class="slate">Se borran los workflows publicados, las decisiones, los tickets y el registro de auditoría de esta sesión. Los datos de planta vuelven a las 07:05 del martes 29/09/2026.</p>`,
+        body: html`<p class="slate">${I18N && I18N.english ? "Published workflows, decisions, tickets and the audit log for the selected industry will be cleared. Other industries keep their sessions. Data returns to Tuesday 29/09/2026 at 07:05." : "Se borran los workflows publicados, las decisiones, los tickets y el registro de auditoría de la industria seleccionada. Las demás industrias conservan su sesión. Los datos vuelven a las 07:05 del martes 29/09/2026."}</p>`,
         confirmLabel: 'Reiniciar demo',
         icon: 'rotate-ccw'
       });

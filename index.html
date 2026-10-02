@@ -21,8 +21,10 @@
   <link rel="stylesheet" href="assets/css/scene-retirada.css">
   <link rel="stylesheet" href="assets/css/scene-workflow.css">
   <link rel="stylesheet" href="assets/css/scene-reclamacion.css">
+  <link rel="stylesheet" href="assets/css/industries.css">
   <script src="assets/i18n/en.js"></script>
   <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/industries.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#view">Saltar al contenido</a>
@@ -74,6 +76,7 @@
           <span class="crumb cur" id="crumb-title" aria-current="page">Resumen del turno</span>
         </nav>
         <div class="topbar-right">
+          <div class="industry-picker" data-no-translate><label for="industry-select">Industria</label><select id="industry-select" aria-label="Industria / Industry"></select></div>
           <div class="language-switch" role="group" aria-label="Idioma / Language">
             <button type="button" data-language="es" lang="es" aria-label="Mostrar en español" aria-pressed="true">ESP</button>
             <button type="button" data-language="en" lang="en" aria-label="Show in English" aria-pressed="false">ENG</button>
@@ -150,5 +153,6 @@
   <script src="assets/js/scenes/cuestionario.js"></script>
   <script src="assets/js/scenes/procedimientos.js"></script>
   <script src="assets/js/scenes/plataforma.js"></script>
+  <script src="assets/js/scenes/industries.js"></script>
 </body>
 </html>

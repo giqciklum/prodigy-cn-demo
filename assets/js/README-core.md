@@ -2,9 +2,13 @@
 
 Guía para quien construye una escena. Todo lo que sigue existe en `window.App` (cargado por `assets/js/core.js`). La escena de referencia es `assets/js/scenes/turno.js`: cópiala como patrón. La galería `tests/gallery.html` (no se publica) muestra cada componente con datos reales de `CN_DATA`.
 
+## v2.2: industrias
+
+La guía siguiente describe los componentes de la demo original. Las cuatro industrias nuevas los reutilizan desde `scenes/industries.js`; sus perfiles están en `../industries.js`. El README público documenta el contrato y la arquitectura. Las restricciones editoriales históricas de cambios por fichero de esta guía no impiden mantener el selector ni el motor compartido. La línea de simulación y sus límites deben quedar visibles.
+
 ## 0. Antes de escribir una línea
 
-- Lee `SPEC-v2.md` §1 (reglas anti «AI slop»). Resumen: títulos descriptivos y nada de eslóganes ni tríadas; sin emojis ni iconos de caracteres Unicode (solo `App.icon`); sin degradados, brillos ni glassmorphism; cifras exactas sacadas de `CN_DATA`; vocabulario de planta; sus sistemas por su nombre; una sola línea de honestidad (ya está en el pie y en «Acerca de esta demo»): **no** escribas «ilustrativo», «simulado» o «demo» por la interfaz.
+- Lee `SPEC-v2.md` §1 (reglas anti «AI slop»). Resumen: títulos descriptivos y nada de eslóganes ni tríadas; sin emojis ni iconos de caracteres Unicode (solo `App.icon`); sin degradados, brillos ni glassmorphism; cifras exactas sacadas de `CN_DATA`; vocabulario de planta; sus sistemas por su nombre; una sola línea de honestidad (ya está en el pie y en «Acerca de esta demo»): explica los límites en el pie, Acerca de, plataforma y el generador preparado cuando corresponda.
 - Colores: solo las variables de `assets/css/tokens.css`. Rojo (`--cn-red`) únicamente para crítico.
 - Español de España con tildes, «comillas latinas», formato `−13,9 °C`, `17.600 kg`, `29/09/2026 05:50` (usa `App.fmt`, nunca `toFixed` a mano).
 - Personas: solo roles (`CN_DATA.roles`), nunca nombres.
